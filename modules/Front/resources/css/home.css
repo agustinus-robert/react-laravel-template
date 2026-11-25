@@ -1,0 +1,363 @@
+.home {
+    min-height: 100vh;
+    padding: 0 8%;
+    background: linear-gradient(135deg, #f8fafc, #edf2f7);
+    color: #263445;
+    overflow: hidden;
+}
+
+/* Navigation */
+
+.home-nav {
+    height: 85px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid rgba(148, 163, 184, 0.18);
+}
+
+.home-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 17px;
+    font-weight: 750;
+}
+
+.home-brand-icon {
+    width: 35px;
+    height: 35px;
+    display: grid;
+    place-items: center;
+    border-radius: 10px;
+    background: #299879;
+    color: white;
+}
+
+.home-nav-links {
+    display: flex;
+    gap: 30px;
+}
+
+.home-nav-links a {
+    color: #718096;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    transition: color 0.2s;
+}
+
+.home-nav-links a:hover {
+    color: #299879;
+}
+
+/* Hero */
+
+.home-main {
+    min-height: 560px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+}
+
+.home-content {
+    max-width: 600px;
+    position: relative;
+    z-index: 2;
+}
+
+.home-badge {
+    display: inline-block;
+    padding: 9px 17px;
+    border-radius: 30px;
+    background: #e0f2ed;
+    color: #27866b;
+    font-size: 13px;
+    font-weight: 650;
+    margin-bottom: 25px;
+}
+
+.home h1 {
+    font-size: clamp(38px, 5vw, 60px);
+    font-weight: 800;
+    line-height: 1.15;
+    letter-spacing: -2px;
+    margin: 0 0 22px;
+    color: #263445;
+}
+
+.home h1 span {
+    display: block;
+    color: #299879;
+}
+
+.home-content > p {
+    max-width: 490px;
+    font-size: 16px;
+    line-height: 1.8;
+    color: #748091;
+    margin-bottom: 32px;
+}
+
+.home-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.home-actions button,
+.home-actions a {
+    border: none;
+    padding: 14px 24px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 650;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.25s ease;
+}
+
+.home-btn-primary {
+    background: #299879;
+    color: white;
+    box-shadow: 0 8px 20px rgba(41, 152, 121, 0.2);
+}
+
+.home-btn-primary:hover {
+    background: #207d64;
+    transform: translateY(-2px);
+}
+
+.home-btn-secondary {
+    background: white;
+    color: #536273;
+    border: 1px solid #e2e8f0 !important;
+}
+
+.home-btn-secondary:hover {
+    background: #f1f5f9;
+}
+
+.home-footer {
+    margin-top: 55px;
+    font-size: 12px;
+    color: #a0aab7;
+    letter-spacing: 0.5px;
+}
+
+/* Decoration */
+
+.home-decoration {
+    position: relative;
+    width: 350px;
+    height: 350px;
+    flex-shrink: 0;
+    margin-right: 4%;
+}
+
+.home-circle {
+    position: absolute;
+    border-radius: 50%;
+}
+
+.circle-one {
+    width: 300px;
+    height: 300px;
+    background: linear-gradient(135deg, #b9eadb, #d8f3e9);
+    top: 20px;
+    left: 20px;
+}
+
+.circle-two {
+    width: 180px;
+    height: 180px;
+    background: linear-gradient(135deg, #f6d8b5, #fcebd9);
+    bottom: 0;
+    right: 0;
+}
+
+.home-glass {
+    position: absolute;
+    width: 130px;
+    height: 130px;
+    background: rgba(255, 255, 255, 0.65);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    border-radius: 35px;
+    top: 110px;
+    left: 110px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 20px 50px rgba(50, 90, 80, 0.12);
+}
+
+.home-glass span {
+    font-size: 55px;
+    color: #299879;
+}
+
+/* Explore */
+
+.home-explore {
+    padding: 65px 0 80px;
+    border-top: 1px solid rgba(148, 163, 184, 0.2);
+}
+
+.home-section-heading {
+    margin-bottom: 35px;
+}
+
+.home-section-heading > span {
+    color: #299879;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 2px;
+}
+
+.home-section-heading h2 {
+    font-size: 30px;
+    font-weight: 800;
+    letter-spacing: -1px;
+    margin: 10px 0;
+}
+
+.home-section-heading p {
+    color: #8190a0;
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+.home-cards {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
+}
+
+.home-card {
+    display: block;
+    padding: 28px;
+    background: rgba(255, 255, 255, 0.8);
+    border: 1px solid #e6ebf0;
+    border-radius: 16px;
+    text-decoration: none;
+    transition: all 0.25s ease;
+}
+
+.home-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(40, 60, 80, 0.08);
+    border-color: #b9dfd2;
+}
+
+.home-card-icon {
+    width: 48px;
+    height: 48px;
+    display: grid;
+    place-items: center;
+    border-radius: 13px;
+    font-size: 22px;
+    font-weight: 800;
+    margin-bottom: 22px;
+}
+
+.laravel-icon {
+    background: #fff0e9;
+    color: #f05252;
+}
+
+.react-icon {
+    background: #e4f5fb;
+    color: #149eca;
+}
+
+.inertia-icon {
+    background: #e8f5ee;
+    color: #299879;
+}
+
+.home-card h3 {
+    font-size: 18px;
+    color: #263445;
+    margin: 0 0 12px;
+}
+
+.home-card p {
+    min-height: 75px;
+    color: #8190a0;
+    font-size: 13px;
+    line-height: 1.8;
+    margin-bottom: 20px;
+}
+
+.home-card > span {
+    color: #299879;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+/* Bottom */
+
+.home-bottom {
+    min-height: 65px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 1px solid rgba(148, 163, 184, 0.2);
+    color: #9aa5b2;
+    font-size: 12px;
+}
+
+/* Responsive */
+
+@media (max-width: 900px) {
+    .home-decoration {
+        transform: scale(0.8);
+        margin-right: -30px;
+    }
+}
+
+@media (max-width: 700px) {
+    .home {
+        padding: 0 22px;
+    }
+
+    .home-nav {
+        height: 70px;
+    }
+
+    .home-nav-links {
+        gap: 12px;
+    }
+
+    .home-nav-links a {
+        font-size: 12px;
+    }
+
+    .home-main {
+        min-height: 480px;
+    }
+
+    .home-decoration {
+        display: none;
+    }
+
+    .home h1 {
+        letter-spacing: -1px;
+    }
+
+    .home-cards {
+        grid-template-columns: 1fr;
+    }
+
+    .home-card p {
+        min-height: auto;
+    }
+
+    .home-bottom {
+        gap: 12px;
+        flex-wrap: wrap;
+        padding: 20px 0;
+    }
+}
