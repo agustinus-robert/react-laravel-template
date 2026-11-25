@@ -1,5 +1,5 @@
-import { Form, Head, usePage } from '@inertiajs/react';
-import { Link } from '@inertiajs/react';
+import { Form, Head, usePage, Link } from '@inertiajs/react';
+
 import ProfileController from '@/actions/App/Http/Controllers/Settings/ProfileController';
 import DeleteUser from '@/components/delete-user';
 import Heading from '@/components/heading';
@@ -7,6 +7,7 @@ import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+
 import { edit } from '@/routes/profile';
 import { send } from '@/routes/verification';
 import type { Auth } from '@/types';
@@ -14,6 +15,8 @@ import type { Auth } from '@/types';
 type PageProps = {
     auth: Auth;
 };
+
+const IS_BOOTSTRAP = (import.meta.env.VITE_THEME || 'tailwind') === 'bootstrap';
 
 export default function Profile({
     mustVerifyEmail,
@@ -30,7 +33,11 @@ export default function Profile({
 
             <h1 className="sr-only">Profile settings</h1>
 
-            <div className="space-y-6">
+            <div
+                className={
+                    IS_BOOTSTRAP ? 'd-flex flex-column gap-4' : 'space-y-6'
+                }
+            >
                 <Heading
                     variant="small"
                     title="Profile"
@@ -42,16 +49,28 @@ export default function Profile({
                     options={{
                         preserveScroll: true,
                     }}
-                    className="space-y-6"
+                    className={
+                        IS_BOOTSTRAP ? 'd-flex flex-column gap-4' : 'space-y-6'
+                    }
                 >
                     {({ processing, errors }) => (
                         <>
-                            <div className="grid gap-2">
+                            <div
+                                className={
+                                    IS_BOOTSTRAP
+                                        ? 'd-flex flex-column gap-2'
+                                        : 'gap-2 grid'
+                                }
+                            >
                                 <Label htmlFor="name">Name</Label>
 
                                 <Input
                                     id="name"
-                                    className="mt-1 block w-full"
+                                    className={
+                                        IS_BOOTSTRAP
+                                            ? 'w-100'
+                                            : 'mt-1 block w-full'
+                                    }
                                     defaultValue={auth.user.name}
                                     name="name"
                                     required
@@ -60,18 +79,28 @@ export default function Profile({
                                 />
 
                                 <InputError
-                                    className="mt-2"
+                                    className={IS_BOOTSTRAP ? 'mt-1' : 'mt-2'}
                                     message={errors.name}
                                 />
                             </div>
 
-                            <div className="grid gap-2">
+                            <div
+                                className={
+                                    IS_BOOTSTRAP
+                                        ? 'd-flex flex-column gap-2'
+                                        : 'gap-2 grid'
+                                }
+                            >
                                 <Label htmlFor="email">Email address</Label>
 
                                 <Input
                                     id="email"
                                     type="email"
-                                    className="mt-1 block w-full"
+                                    className={
+                                        IS_BOOTSTRAP
+                                            ? 'w-100'
+                                            : 'mt-1 block w-full'
+                                    }
                                     defaultValue={auth.user.email}
                                     name="email"
                                     required
@@ -80,7 +109,7 @@ export default function Profile({
                                 />
 
                                 <InputError
-                                    className="mt-2"
+                                    className={IS_BOOTSTRAP ? 'mt-1' : 'mt-2'}
                                     message={errors.email}
                                 />
                             </div>
@@ -88,12 +117,22 @@ export default function Profile({
                             {mustVerifyEmail &&
                                 auth.user.email_verified_at === null && (
                                     <div>
-                                        <p className="-mt-4 text-sm text-muted-foreground">
+                                        <p
+                                            className={
+                                                IS_BOOTSTRAP
+                                                    ? 'small text-secondary mb-0'
+                                                    : '-mt-4 text-sm text-muted-foreground'
+                                            }
+                                        >
                                             Your email address is unverified.{' '}
                                             <Link
                                                 href={send()}
                                                 as="button"
-                                                className="text-foreground underline decoration-neutral-300 underline-offset-4 transition-colors duration-300 ease-out hover:decoration-current! dark:decoration-neutral-500"
+                                                className={
+                                                    IS_BOOTSTRAP
+                                                        ? 'btn btn-link p-0 text-body text-decoration-underline align-baseline'
+                                                        : 'text-foreground decoration-neutral-300 ease-out dark:decoration-neutral-500 underline underline-offset-4 transition-colors duration-300 hover:decoration-current!'
+                                                }
                                             >
                                                 Click here to re-send the
                                                 verification email.
@@ -102,7 +141,13 @@ export default function Profile({
 
                                         {status ===
                                             'verification-link-sent' && (
-                                            <div className="mt-2 text-sm font-medium text-green-600">
+                                            <div
+                                                className={
+                                                    IS_BOOTSTRAP
+                                                        ? 'mt-2 small fw-medium text-success'
+                                                        : 'mt-2 text-sm font-medium text-green-600'
+                                                }
+                                            >
                                                 A new verification link has been
                                                 sent to your email address.
                                             </div>
@@ -110,7 +155,13 @@ export default function Profile({
                                     </div>
                                 )}
 
-                            <div className="flex items-center gap-4">
+                            <div
+                                className={
+                                    IS_BOOTSTRAP
+                                        ? 'd-flex align-items-center gap-3'
+                                        : 'gap-4 flex items-center'
+                                }
+                            >
                                 <Button
                                     disabled={processing}
                                     data-test="update-profile-button"

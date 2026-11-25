@@ -1,8 +1,12 @@
+
 import * as SheetPrimitive from "@radix-ui/react-dialog"
 import { XIcon } from "lucide-react"
 import * as React from "react"
 
 import { cn } from "@/lib/utils"
+
+const IS_BOOTSTRAP =
+  (import.meta.env.VITE_THEME || "tailwind") === "bootstrap"
 
 function Sheet({ ...props }: React.ComponentProps<typeof SheetPrimitive.Root>) {
   return <SheetPrimitive.Root data-slot="sheet" {...props} />
@@ -30,6 +34,20 @@ function SheetOverlay({
   className,
   ...props
 }: React.ComponentProps<typeof SheetPrimitive.Overlay>) {
+  if (IS_BOOTSTRAP) {
+    return (
+      <SheetPrimitive.Overlay
+        data-slot="sheet-overlay"
+        className={cn(
+          "position-fixed top-0 start-0 w-100 h-100 bg-dark bg-opacity-50",
+          className
+        )}
+        style={{ zIndex: 1040 }}
+        {...props}
+      />
+    )
+  }
+
   return (
     <SheetPrimitive.Overlay
       data-slot="sheet-overlay"
@@ -50,6 +68,50 @@ function SheetContent({
 }: React.ComponentProps<typeof SheetPrimitive.Content> & {
   side?: "top" | "right" | "bottom" | "left"
 }) {
+  if (IS_BOOTSTRAP) {
+    const sideClasses = {
+      right: "top-0 end-0 h-100 border-start",
+      left: "top-0 start-0 h-100 border-end",
+      top: "top-0 start-0 w-100 border-bottom",
+      bottom: "bottom-0 start-0 w-100 border-top",
+    }
+
+    const sideStyles: React.CSSProperties = {
+      position: "fixed",
+      zIndex: 1050,
+      width: side === "left" || side === "right" ? "75%" : "100%",
+      maxWidth:
+        side === "left" || side === "right" ? "24rem" : "100%",
+      maxHeight: side === "top" || side === "bottom" ? "90vh" : "100vh",
+      overflowY: "auto",
+    }
+
+    return (
+      <SheetPortal>
+        <SheetOverlay />
+        <SheetPrimitive.Content
+          data-slot="sheet-content"
+          className={cn(
+            "bg-body text-body bg-body-tertiary d-flex flex-column gap-3 shadow",
+            sideClasses[side],
+            className
+          )}
+          style={sideStyles}
+          {...props}
+        >
+          {children}
+
+          <SheetPrimitive.Close
+            className="btn btn-sm btn-light position-absolute top-0 end-0 m-3"
+            aria-label="Close"
+          >
+            <XIcon size={16} />
+          </SheetPrimitive.Close>
+        </SheetPrimitive.Content>
+      </SheetPortal>
+    )
+  }
+
   return (
     <SheetPortal>
       <SheetOverlay />
@@ -83,7 +145,11 @@ function SheetHeader({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="sheet-header"
-      className={cn("flex flex-col gap-1.5 p-4", className)}
+      className={
+        IS_BOOTSTRAP
+          ? cn("d-flex flex-column gap-2 p-3", className)
+          : cn("flex flex-col gap-1.5 p-4", className)
+      }
       {...props}
     />
   )
@@ -93,7 +159,11 @@ function SheetFooter({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="sheet-footer"
-      className={cn("mt-auto flex flex-col gap-2 p-4", className)}
+      className={
+        IS_BOOTSTRAP
+          ? cn("mt-auto d-flex flex-column gap-2 p-3", className)
+          : cn("mt-auto flex flex-col gap-2 p-4", className)
+      }
       {...props}
     />
   )
@@ -106,7 +176,11 @@ function SheetTitle({
   return (
     <SheetPrimitive.Title
       data-slot="sheet-title"
-      className={cn("text-foreground font-semibold", className)}
+      className={
+        IS_BOOTSTRAP
+          ? cn("fs-5 fw-semibold", className)
+          : cn("text-foreground font-semibold", className)
+      }
       {...props}
     />
   )
@@ -119,7 +193,11 @@ function SheetDescription({
   return (
     <SheetPrimitive.Description
       data-slot="sheet-description"
-      className={cn("text-muted-foreground text-sm", className)}
+      className={
+        IS_BOOTSTRAP
+          ? cn("text-body-secondary small", className)
+          : cn("text-muted-foreground text-sm", className)
+      }
       {...props}
     />
   )

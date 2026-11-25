@@ -16,20 +16,44 @@ import {
 } from '@/components/ui/dialog';
 import { Label } from '@/components/ui/label';
 
+const IS_BOOTSTRAP = (import.meta.env.VITE_THEME || 'tailwind') === 'bootstrap';
+
 export default function DeleteUser() {
     const passwordInput = useRef<HTMLInputElement>(null);
 
     return (
-        <div className="space-y-6">
+        <div
+            className={IS_BOOTSTRAP ? 'd-flex flex-column gap-4' : 'space-y-6'}
+        >
             <Heading
                 variant="small"
                 title="Delete account"
                 description="Delete your account and all of its resources"
             />
-            <div className="space-y-4 rounded-lg border border-red-100 bg-red-50 p-4 dark:border-red-200/10 dark:bg-red-700/10">
-                <div className="relative space-y-0.5 text-red-600 dark:text-red-100">
-                    <p className="font-medium">Warning</p>
-                    <p className="text-sm">
+
+            <div
+                className={
+                    IS_BOOTSTRAP
+                        ? 'border-danger-subtle bg-danger bg-opacity-10 rounded-3 p-3 d-flex flex-column gap-3 border'
+                        : 'space-y-4 rounded-lg border-red-100 bg-red-50 p-4 dark:border-red-200/10 dark:bg-red-700/10 border'
+                }
+            >
+                <div
+                    className={
+                        IS_BOOTSTRAP
+                            ? 'text-danger'
+                            : 'space-y-0.5 text-red-600 dark:text-red-100 relative'
+                    }
+                >
+                    <p
+                        className={
+                            IS_BOOTSTRAP ? 'fw-semibold mb-1' : 'font-medium'
+                        }
+                    >
+                        Warning
+                    </p>
+
+                    <p className={IS_BOOTSTRAP ? 'small mb-0' : 'text-sm'}>
                         Please proceed with caution, this cannot be undone.
                     </p>
                 </div>
@@ -43,10 +67,12 @@ export default function DeleteUser() {
                             Delete account
                         </Button>
                     </DialogTrigger>
+
                     <DialogContent>
                         <DialogTitle>
                             Are you sure you want to delete your account?
                         </DialogTitle>
+
                         <DialogDescription>
                             Once your account is deleted, all of its resources
                             and data will also be permanently deleted. Please
@@ -61,11 +87,21 @@ export default function DeleteUser() {
                             }}
                             onError={() => passwordInput.current?.focus()}
                             resetOnSuccess
-                            className="space-y-6"
+                            className={
+                                IS_BOOTSTRAP
+                                    ? 'd-flex flex-column gap-4 mt-3'
+                                    : 'space-y-6'
+                            }
                         >
                             {({ resetAndClearErrors, processing, errors }) => (
                                 <>
-                                    <div className="grid gap-2">
+                                    <div
+                                        className={
+                                            IS_BOOTSTRAP
+                                                ? 'd-flex flex-column gap-2'
+                                                : 'gap-2 grid'
+                                        }
+                                    >
                                         <Label
                                             htmlFor="password"
                                             className="sr-only"
@@ -84,7 +120,11 @@ export default function DeleteUser() {
                                         <InputError message={errors.password} />
                                     </div>
 
-                                    <DialogFooter className="gap-2">
+                                    <DialogFooter
+                                        className={
+                                            IS_BOOTSTRAP ? 'gap-2' : 'gap-2'
+                                        }
+                                    >
                                         <DialogClose asChild>
                                             <Button
                                                 variant="secondary"

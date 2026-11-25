@@ -11,6 +11,8 @@ import { Label } from '@/components/ui/label';
 import { Spinner } from '@/components/ui/spinner';
 import { store } from '@/routes/password/confirm';
 
+const IS_BOOTSTRAP = (import.meta.env.VITE_THEME || 'tailwind') === 'bootstrap';
+
 export default function ConfirmPassword() {
     return (
         <>
@@ -28,9 +30,22 @@ export default function ConfirmPassword() {
 
             <Form {...store.form()} resetOnSuccess={['password']}>
                 {({ processing, errors }) => (
-                    <div className="space-y-6">
-                        <div className="grid gap-2">
+                    <div
+                        className={
+                            IS_BOOTSTRAP
+                                ? 'd-flex flex-column gap-4'
+                                : 'space-y-6'
+                        }
+                    >
+                        <div
+                            className={
+                                IS_BOOTSTRAP
+                                    ? 'd-flex flex-column gap-2'
+                                    : 'gap-2 grid'
+                            }
+                        >
                             <Label htmlFor="password">Password</Label>
+
                             <PasswordInput
                                 id="password"
                                 name="password"
@@ -42,9 +57,15 @@ export default function ConfirmPassword() {
                             <InputError message={errors.password} />
                         </div>
 
-                        <div className="flex items-center">
+                        <div
+                            className={
+                                IS_BOOTSTRAP
+                                    ? 'd-flex align-items-center'
+                                    : 'flex items-center'
+                            }
+                        >
                             <Button
-                                className="w-full"
+                                className={IS_BOOTSTRAP ? 'w-100' : 'w-full'}
                                 disabled={processing}
                                 data-test="confirm-password-button"
                             >

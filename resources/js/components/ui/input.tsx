@@ -1,8 +1,30 @@
+
 import * as React from "react"
 
 import { cn } from "@/lib/utils"
 
-function Input({ className, type, ...props }: React.ComponentProps<"input">) {
+const IS_BOOTSTRAP =
+  (import.meta.env.VITE_THEME || "tailwind") === "bootstrap"
+
+function Input({
+  className,
+  type,
+  ...props
+}: React.ComponentProps<"input">) {
+  if (IS_BOOTSTRAP) {
+    return (
+      <input
+        type={type}
+        data-slot="input"
+        className={cn(
+          "form-control",
+          className
+        )}
+        {...props}
+      />
+    )
+  }
+
   return (
     <input
       type={type}

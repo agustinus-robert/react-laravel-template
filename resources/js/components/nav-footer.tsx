@@ -9,6 +9,8 @@ import {
 import { toUrl } from '@/lib/utils';
 import type { NavItem } from '@/types';
 
+const IS_BOOTSTRAP = (import.meta.env.VITE_THEME || 'tailwind') === 'bootstrap';
+
 export function NavFooter({
     items,
     className,
@@ -19,7 +21,11 @@ export function NavFooter({
     return (
         <SidebarGroup
             {...props}
-            className={`group-data-[collapsible=icon]:p-0 ${className || ''}`}
+            className={
+                IS_BOOTSTRAP
+                    ? `p-0 ${className || ''}`
+                    : `group-data-[collapsible=icon]:p-0 ${className || ''}`
+            }
         >
             <SidebarGroupContent>
                 <SidebarMenu>
@@ -27,16 +33,31 @@ export function NavFooter({
                         <SidebarMenuItem key={item.title}>
                             <SidebarMenuButton
                                 asChild
-                                className="text-neutral-600 hover:text-neutral-800 dark:text-neutral-300 dark:hover:text-neutral-100"
+                                className={
+                                    IS_BOOTSTRAP
+                                        ? 'text-secondary'
+                                        : 'text-neutral-600 hover:text-neutral-800 dark:text-neutral-300 dark:hover:text-neutral-100'
+                                }
                             >
                                 <a
                                     href={toUrl(item.href)}
                                     target="_blank"
                                     rel="noopener noreferrer"
+                                    className={
+                                        IS_BOOTSTRAP
+                                            ? 'd-flex align-items-center gap-2 text-decoration-none text-secondary'
+                                            : undefined
+                                    }
                                 >
                                     {item.icon && (
-                                        <item.icon className="h-5 w-5" />
+                                        <item.icon
+                                            className={
+                                                IS_BOOTSTRAP ? '' : 'h-5 w-5'
+                                            }
+                                            size={IS_BOOTSTRAP ? 20 : undefined}
+                                        />
                                     )}
+
                                     <span>{item.title}</span>
                                 </a>
                             </SidebarMenuButton>

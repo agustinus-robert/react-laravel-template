@@ -21,6 +21,8 @@ import {
 import { useCurrentUrl } from '@/hooks/use-current-url';
 import type { NavItem } from '@/types';
 
+const IS_BOOTSTRAP = (import.meta.env.VITE_THEME || 'tailwind') === 'bootstrap';
+
 type NavItemWithChildren = NavItem & {
     items?: NavItemWithChildren[];
 };
@@ -56,7 +58,10 @@ export function NavMain({ groups = [] }: { groups: NavGroup[] }) {
     return (
         <>
             {groups.map((group) => (
-                <SidebarGroup key={group.title} className="px-2 py-0">
+                <SidebarGroup
+                    key={group.title}
+                    className={IS_BOOTSTRAP ? 'px-2 py-0' : 'px-2 py-0'}
+                >
                     <SidebarGroupLabel>{group.title}</SidebarGroupLabel>
 
                     <SidebarMenu>
@@ -96,7 +101,26 @@ export function NavMain({ groups = [] }: { groups: NavGroup[] }) {
 
                                                     <span>{item.title}</span>
 
-                                                    <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
+                                                    <ChevronRight
+                                                        className={
+                                                            IS_BOOTSTRAP
+                                                                ? 'ms-auto'
+                                                                : 'ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90'
+                                                        }
+                                                        size={
+                                                            IS_BOOTSTRAP
+                                                                ? 16
+                                                                : undefined
+                                                        }
+                                                        style={
+                                                            IS_BOOTSTRAP
+                                                                ? {
+                                                                      transition:
+                                                                          'transform 200ms',
+                                                                  }
+                                                                : undefined
+                                                        }
+                                                    />
                                                 </SidebarMenuButton>
                                             </CollapsibleTrigger>
 
@@ -142,7 +166,26 @@ export function NavMain({ groups = [] }: { groups: NavGroup[] }) {
                                                                                         }
                                                                                     </span>
 
-                                                                                    <ChevronRight className="ml-auto size-4 transition-transform duration-200 group-data-[state=open]/subcollapsible:rotate-90" />
+                                                                                    <ChevronRight
+                                                                                        className={
+                                                                                            IS_BOOTSTRAP
+                                                                                                ? 'ms-auto'
+                                                                                                : 'size-4 ml-auto transition-transform duration-200 group-data-[state=open]/subcollapsible:rotate-90'
+                                                                                        }
+                                                                                        size={
+                                                                                            IS_BOOTSTRAP
+                                                                                                ? 16
+                                                                                                : undefined
+                                                                                        }
+                                                                                        style={
+                                                                                            IS_BOOTSTRAP
+                                                                                                ? {
+                                                                                                      transition:
+                                                                                                          'transform 200ms',
+                                                                                                  }
+                                                                                                : undefined
+                                                                                        }
+                                                                                    />
                                                                                 </SidebarMenuSubButton>
                                                                             </CollapsibleTrigger>
 

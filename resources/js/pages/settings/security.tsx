@@ -12,6 +12,8 @@ import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { edit } from '@/routes/security';
 
+const IS_BOOTSTRAP = (import.meta.env.VITE_THEME || 'tailwind') === 'bootstrap';
+
 type Props = {
     passwordRules: string;
 } & ManagePasskeysProps &
@@ -25,9 +27,15 @@ export default function Security(props: Props) {
         <>
             <Head title="Security settings" />
 
-            <h1 className="sr-only">Security settings</h1>
+            <h1 className={IS_BOOTSTRAP ? 'visually-hidden' : 'sr-only'}>
+                Security settings
+            </h1>
 
-            <div className="space-y-6">
+            <div
+                className={
+                    IS_BOOTSTRAP ? 'd-flex flex-column gap-4' : 'space-y-6'
+                }
+            >
                 <Heading
                     variant="small"
                     title="Update password"
@@ -54,11 +62,19 @@ export default function Security(props: Props) {
                             currentPasswordInput.current?.focus();
                         }
                     }}
-                    className="space-y-6"
+                    className={
+                        IS_BOOTSTRAP ? 'd-flex flex-column gap-4' : 'space-y-6'
+                    }
                 >
                     {({ errors, processing }) => (
                         <>
-                            <div className="grid gap-2">
+                            <div
+                                className={
+                                    IS_BOOTSTRAP
+                                        ? 'd-flex flex-column gap-2'
+                                        : 'gap-2 grid'
+                                }
+                            >
                                 <Label htmlFor="current_password">
                                     Current password
                                 </Label>
@@ -67,7 +83,11 @@ export default function Security(props: Props) {
                                     id="current_password"
                                     ref={currentPasswordInput}
                                     name="current_password"
-                                    className="mt-1 block w-full"
+                                    className={
+                                        IS_BOOTSTRAP
+                                            ? 'mt-1 w-100'
+                                            : 'mt-1 block w-full'
+                                    }
                                     autoComplete="current-password"
                                     placeholder="Current password"
                                 />
@@ -75,14 +95,24 @@ export default function Security(props: Props) {
                                 <InputError message={errors.current_password} />
                             </div>
 
-                            <div className="grid gap-2">
+                            <div
+                                className={
+                                    IS_BOOTSTRAP
+                                        ? 'd-flex flex-column gap-2'
+                                        : 'gap-2 grid'
+                                }
+                            >
                                 <Label htmlFor="password">New password</Label>
 
                                 <PasswordInput
                                     id="password"
                                     ref={passwordInput}
                                     name="password"
-                                    className="mt-1 block w-full"
+                                    className={
+                                        IS_BOOTSTRAP
+                                            ? 'mt-1 w-100'
+                                            : 'mt-1 block w-full'
+                                    }
                                     autoComplete="new-password"
                                     placeholder="New password"
                                     passwordrules={props.passwordRules}
@@ -91,7 +121,13 @@ export default function Security(props: Props) {
                                 <InputError message={errors.password} />
                             </div>
 
-                            <div className="grid gap-2">
+                            <div
+                                className={
+                                    IS_BOOTSTRAP
+                                        ? 'd-flex flex-column gap-2'
+                                        : 'gap-2 grid'
+                                }
+                            >
                                 <Label htmlFor="password_confirmation">
                                     Confirm password
                                 </Label>
@@ -99,7 +135,11 @@ export default function Security(props: Props) {
                                 <PasswordInput
                                     id="password_confirmation"
                                     name="password_confirmation"
-                                    className="mt-1 block w-full"
+                                    className={
+                                        IS_BOOTSTRAP
+                                            ? 'mt-1 w-100'
+                                            : 'mt-1 block w-full'
+                                    }
                                     autoComplete="new-password"
                                     placeholder="Confirm password"
                                     passwordrules={props.passwordRules}
@@ -110,7 +150,13 @@ export default function Security(props: Props) {
                                 />
                             </div>
 
-                            <div className="flex items-center gap-4">
+                            <div
+                                className={
+                                    IS_BOOTSTRAP
+                                        ? 'd-flex align-items-center gap-3'
+                                        : 'gap-4 flex items-center'
+                                }
+                            >
                                 <Button
                                     disabled={processing}
                                     data-test="update-password-button"

@@ -12,6 +12,8 @@ import {
 } from '@/components/ui/card';
 import { regenerateRecoveryCodes } from '@/routes/two-factor';
 
+const IS_BOOTSTRAP = (import.meta.env.VITE_THEME || 'tailwind') === 'bootstrap';
+
 type Props = {
     recoveryCodesList: string[];
     fetchRecoveryCodes: () => Promise<void>;
@@ -55,25 +57,46 @@ export default function TwoFactorRecoveryCodes({
     return (
         <Card>
             <CardHeader>
-                <CardTitle className="flex gap-3">
-                    <LockKeyhole className="size-4" aria-hidden="true" />
+                <CardTitle
+                    className={
+                        IS_BOOTSTRAP
+                            ? 'd-flex align-items-center gap-3'
+                            : 'gap-3 flex'
+                    }
+                >
+                    <LockKeyhole
+                        className={IS_BOOTSTRAP ? '' : 'size-4'}
+                        size={IS_BOOTSTRAP ? 16 : undefined}
+                        aria-hidden="true"
+                    />
                     2FA recovery codes
                 </CardTitle>
+
                 <CardDescription>
                     Recovery codes let you regain access if you lose your 2FA
                     device. Store them in a secure password manager.
                 </CardDescription>
             </CardHeader>
+
             <CardContent>
-                <div className="flex flex-col gap-3 select-none sm:flex-row sm:items-center sm:justify-between">
+                <div
+                    className={
+                        IS_BOOTSTRAP
+                            ? 'd-flex flex-column flex-sm-row align-items-sm-center justify-content-sm-between gap-3'
+                            : 'gap-3 sm:flex-row sm:items-center sm:justify-between flex flex-col select-none'
+                    }
+                >
                     <Button
                         onClick={toggleCodesVisibility}
-                        className="w-fit"
+                        className={
+                            IS_BOOTSTRAP ? 'align-self-start w-auto' : 'w-fit'
+                        }
                         aria-expanded={codesAreVisible}
                         aria-controls="recovery-codes-section"
                     >
                         <RecoveryCodeIconComponent
-                            className="size-4"
+                            className={IS_BOOTSTRAP ? '' : 'size-4'}
+                            size={IS_BOOTSTRAP ? 16 : undefined}
                             aria-hidden="true"
                         />
                         {codesAreVisible ? 'Hide' : 'View'} recovery codes
@@ -92,25 +115,51 @@ export default function TwoFactorRecoveryCodes({
                                     disabled={processing}
                                     aria-describedby="regenerate-warning"
                                 >
-                                    <RefreshCw /> Regenerate codes
+                                    <RefreshCw
+                                        size={IS_BOOTSTRAP ? 16 : undefined}
+                                    />
+                                    Regenerate codes
                                 </Button>
                             )}
                         </Form>
                     )}
                 </div>
+
                 <div
                     id="recovery-codes-section"
-                    className={`relative overflow-hidden transition-all duration-300 ${codesAreVisible ? 'h-auto opacity-100' : 'h-0 opacity-0'}`}
+                    className={
+                        IS_BOOTSTRAP
+                            ? `position-relative overflow-hidden ${codesAreVisible ? 'mt-3 opacity-100' : 'mt-0 opacity-0'}`
+                            : `relative overflow-hidden transition-all duration-300 ${codesAreVisible ? 'h-auto opacity-100' : 'h-0 opacity-0'}`
+                    }
+                    style={
+                        IS_BOOTSTRAP
+                            ? {
+                                  maxHeight: codesAreVisible ? '1000px' : '0',
+                                  transition: 'all 300ms ease',
+                              }
+                            : undefined
+                    }
                     aria-hidden={!codesAreVisible}
                 >
-                    <div className="mt-3 space-y-3">
+                    <div
+                        className={
+                            IS_BOOTSTRAP
+                                ? 'd-flex flex-column gap-3'
+                                : 'mt-3 space-y-3'
+                        }
+                    >
                         {errors?.length ? (
                             <AlertError errors={errors} />
                         ) : (
                             <>
                                 <div
                                     ref={codesSectionRef}
-                                    className="grid gap-1 rounded-lg bg-muted p-4 font-mono text-sm"
+                                    className={
+                                        IS_BOOTSTRAP
+                                            ? 'd-grid gap-1 rounded-3 bg-body-secondary p-3 font-monospace small'
+                                            : 'gap-1 rounded-lg bg-muted p-4 font-mono text-sm grid'
+                                    }
                                     role="list"
                                     aria-label="Recovery codes"
                                 >
@@ -119,14 +168,22 @@ export default function TwoFactorRecoveryCodes({
                                             <div
                                                 key={index}
                                                 role="listitem"
-                                                className="select-text"
+                                                className={
+                                                    IS_BOOTSTRAP
+                                                        ? 'user-select-text'
+                                                        : 'select-text'
+                                                }
                                             >
                                                 {code}
                                             </div>
                                         ))
                                     ) : (
                                         <div
-                                            className="space-y-2"
+                                            className={
+                                                IS_BOOTSTRAP
+                                                    ? 'd-flex flex-column gap-2'
+                                                    : 'space-y-2'
+                                            }
                                             aria-label="Loading recovery codes"
                                         >
                                             {Array.from(
@@ -134,21 +191,51 @@ export default function TwoFactorRecoveryCodes({
                                                 (_, index) => (
                                                     <div
                                                         key={index}
-                                                        className="h-4 animate-pulse rounded bg-muted-foreground/20"
+                                                        className={
+                                                            IS_BOOTSTRAP
+                                                                ? 'placeholder-glow'
+                                                                : 'h-4 animate-pulse rounded bg-muted-foreground/20'
+                                                        }
                                                         aria-hidden="true"
-                                                    />
+                                                    >
+                                                        {IS_BOOTSTRAP && (
+                                                            <span
+                                                                className="placeholder rounded col-12"
+                                                                style={{
+                                                                    height: '1rem',
+                                                                }}
+                                                            />
+                                                        )}
+                                                    </div>
                                                 ),
                                             )}
                                         </div>
                                     )}
                                 </div>
 
-                                <div className="text-xs text-muted-foreground select-none">
-                                    <p id="regenerate-warning">
+                                <div
+                                    className={
+                                        IS_BOOTSTRAP
+                                            ? 'small text-secondary user-select-none'
+                                            : 'text-xs text-muted-foreground select-none'
+                                    }
+                                >
+                                    <p
+                                        id="regenerate-warning"
+                                        className={
+                                            IS_BOOTSTRAP ? 'mb-0' : undefined
+                                        }
+                                    >
                                         Each recovery code can be used once to
                                         access your account and will be removed
                                         after use. If you need more, click{' '}
-                                        <span className="font-bold">
+                                        <span
+                                            className={
+                                                IS_BOOTSTRAP
+                                                    ? 'fw-bold'
+                                                    : 'font-bold'
+                                            }
+                                        >
                                             Regenerate codes
                                         </span>{' '}
                                         above.

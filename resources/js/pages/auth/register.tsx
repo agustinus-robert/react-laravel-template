@@ -9,6 +9,8 @@ import { Spinner } from '@/components/ui/spinner';
 import { login } from '@/routes';
 import { store } from '@/routes/register';
 
+const IS_BOOTSTRAP = (import.meta.env.VITE_THEME || 'tailwind') === 'bootstrap';
+
 type Props = {
     passwordRules: string;
 };
@@ -17,17 +19,35 @@ export default function Register({ passwordRules }: Props) {
     return (
         <>
             <Head title="Register" />
+
             <Form
                 {...store.form()}
                 resetOnSuccess={['password', 'password_confirmation']}
                 disableWhileProcessing
-                className="flex flex-col gap-6"
+                className={
+                    IS_BOOTSTRAP
+                        ? 'd-flex flex-column gap-4'
+                        : 'gap-6 flex flex-col'
+                }
             >
                 {({ processing, errors }) => (
                     <>
-                        <div className="grid gap-6">
-                            <div className="grid gap-2">
+                        <div
+                            className={
+                                IS_BOOTSTRAP
+                                    ? 'd-flex flex-column gap-4'
+                                    : 'gap-6 grid'
+                            }
+                        >
+                            <div
+                                className={
+                                    IS_BOOTSTRAP
+                                        ? 'd-flex flex-column gap-2'
+                                        : 'gap-2 grid'
+                                }
+                            >
                                 <Label htmlFor="name">Name</Label>
+
                                 <Input
                                     id="name"
                                     type="text"
@@ -38,14 +58,22 @@ export default function Register({ passwordRules }: Props) {
                                     name="name"
                                     placeholder="Full name"
                                 />
+
                                 <InputError
                                     message={errors.name}
-                                    className="mt-2"
+                                    className={IS_BOOTSTRAP ? 'mt-1' : 'mt-2'}
                                 />
                             </div>
 
-                            <div className="grid gap-2">
+                            <div
+                                className={
+                                    IS_BOOTSTRAP
+                                        ? 'd-flex flex-column gap-2'
+                                        : 'gap-2 grid'
+                                }
+                            >
                                 <Label htmlFor="email">Email address</Label>
+
                                 <Input
                                     id="email"
                                     type="email"
@@ -55,11 +83,19 @@ export default function Register({ passwordRules }: Props) {
                                     name="email"
                                     placeholder="email@example.com"
                                 />
+
                                 <InputError message={errors.email} />
                             </div>
 
-                            <div className="grid gap-2">
+                            <div
+                                className={
+                                    IS_BOOTSTRAP
+                                        ? 'd-flex flex-column gap-2'
+                                        : 'gap-2 grid'
+                                }
+                            >
                                 <Label htmlFor="password">Password</Label>
+
                                 <PasswordInput
                                     id="password"
                                     required
@@ -69,13 +105,21 @@ export default function Register({ passwordRules }: Props) {
                                     placeholder="Password"
                                     passwordrules={passwordRules}
                                 />
+
                                 <InputError message={errors.password} />
                             </div>
 
-                            <div className="grid gap-2">
+                            <div
+                                className={
+                                    IS_BOOTSTRAP
+                                        ? 'd-flex flex-column gap-2'
+                                        : 'gap-2 grid'
+                                }
+                            >
                                 <Label htmlFor="password_confirmation">
                                     Confirm password
                                 </Label>
+
                                 <PasswordInput
                                     id="password_confirmation"
                                     required
@@ -85,6 +129,7 @@ export default function Register({ passwordRules }: Props) {
                                     placeholder="Confirm password"
                                     passwordrules={passwordRules}
                                 />
+
                                 <InputError
                                     message={errors.password_confirmation}
                                 />
@@ -92,7 +137,9 @@ export default function Register({ passwordRules }: Props) {
 
                             <Button
                                 type="submit"
-                                className="mt-2 w-full"
+                                className={
+                                    IS_BOOTSTRAP ? 'w-100 mt-2' : 'mt-2 w-full'
+                                }
                                 tabIndex={5}
                                 data-test="register-user-button"
                             >
@@ -101,7 +148,13 @@ export default function Register({ passwordRules }: Props) {
                             </Button>
                         </div>
 
-                        <div className="text-center text-sm text-muted-foreground">
+                        <div
+                            className={
+                                IS_BOOTSTRAP
+                                    ? 'small text-secondary text-center'
+                                    : 'text-sm text-muted-foreground text-center'
+                            }
+                        >
                             Already have an account?{' '}
                             <TextLink href={login()} tabIndex={6}>
                                 Log in

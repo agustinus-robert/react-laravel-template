@@ -15,6 +15,8 @@ import { UserInfo } from '@/components/user-info';
 import { UserMenuContent } from '@/components/user-menu-content';
 import { useIsMobile } from '@/hooks/use-mobile';
 
+const IS_BOOTSTRAP = (import.meta.env.VITE_THEME || 'tailwind') === 'bootstrap';
+
 export function NavUser() {
     const { auth } = usePage().props;
     const { state } = useSidebar();
@@ -31,15 +33,40 @@ export function NavUser() {
                     <DropdownMenuTrigger asChild>
                         <SidebarMenuButton
                             size="lg"
-                            className="group text-sidebar-accent-foreground data-[state=open]:bg-sidebar-accent"
+                            className={
+                                IS_BOOTSTRAP
+                                    ? 'd-flex align-items-center gap-2 w-100 text-body'
+                                    : 'group text-sidebar-accent-foreground data-[state=open]:bg-sidebar-accent'
+                            }
                             data-test="sidebar-menu-button"
                         >
                             <UserInfo user={auth.user} />
-                            <ChevronsUpDown className="ml-auto size-4" />
+
+                            <ChevronsUpDown
+                                className={
+                                    IS_BOOTSTRAP
+                                        ? 'ms-auto flex-shrink-0'
+                                        : 'size-4 ml-auto'
+                                }
+                                size={IS_BOOTSTRAP ? 16 : undefined}
+                            />
                         </SidebarMenuButton>
                     </DropdownMenuTrigger>
+
                     <DropdownMenuContent
-                        className="w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg"
+                        className={
+                            IS_BOOTSTRAP
+                                ? 'rounded-3'
+                                : 'min-w-56 rounded-lg w-(--radix-dropdown-menu-trigger-width)'
+                        }
+                        style={
+                            IS_BOOTSTRAP
+                                ? {
+                                      width: 'var(--radix-dropdown-menu-trigger-width)',
+                                      minWidth: '14rem',
+                                  }
+                                : undefined
+                        }
                         align="end"
                         side={
                             isMobile

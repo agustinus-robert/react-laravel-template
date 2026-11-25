@@ -5,6 +5,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 
+const IS_BOOTSTRAP = (import.meta.env.VITE_THEME || 'tailwind') === 'bootstrap';
+
 type Props = {
     onSuccess: () => void;
 };
@@ -33,6 +35,7 @@ export default function PasskeyRegistration({ onSuccess }: Props) {
     });
 
     const [showForm, setShowForm] = useState(false);
+
     const { register, isLoading, error, isSupported } = usePasskeyRegister({
         onSuccess: () => {
             setName('');
@@ -58,7 +61,13 @@ export default function PasskeyRegistration({ onSuccess }: Props) {
 
     if (!isSupported) {
         return (
-            <div className="text-sm text-muted-foreground">
+            <div
+                className={
+                    IS_BOOTSTRAP
+                        ? 'small text-secondary'
+                        : 'text-sm text-muted-foreground'
+                }
+            >
                 Passkeys are not supported in this browser.
             </div>
         );
@@ -75,30 +84,55 @@ export default function PasskeyRegistration({ onSuccess }: Props) {
     return (
         <form
             onSubmit={handleSubmit}
-            className="space-y-4 rounded-lg border border-border bg-muted/50 p-4"
+            className={
+                IS_BOOTSTRAP
+                    ? 'd-flex flex-column gap-3 rounded-3 bg-body-secondary p-3 border'
+                    : 'space-y-4 rounded-lg border-border bg-muted/50 p-4 border'
+            }
         >
-            <div className="grid gap-2">
+            <div
+                className={
+                    IS_BOOTSTRAP ? 'd-flex flex-column gap-2' : 'gap-2 grid'
+                }
+            >
                 <Label htmlFor="passkey-name">Passkey name</Label>
+
                 <Input
                     id="passkey-name"
                     type="text"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     placeholder="e.g., MacBook Pro, iPhone"
-                    className="mt-1 block w-full border-foreground/20"
+                    className={
+                        IS_BOOTSTRAP
+                            ? 'form-control'
+                            : 'mt-1 border-foreground/20 block w-full'
+                    }
                     autoFocus
                 />
-                <p className="text-xs text-muted-foreground">
+
+                <p
+                    className={
+                        IS_BOOTSTRAP
+                            ? 'small text-secondary mb-0'
+                            : 'text-xs text-muted-foreground'
+                    }
+                >
                     A name helps you identify this passkey later.
                 </p>
             </div>
 
             {error && <InputError message={error} />}
 
-            <div className="flex gap-2">
+            <div
+                className={
+                    IS_BOOTSTRAP ? 'd-flex gap-2 flex-wrap' : 'gap-2 flex'
+                }
+            >
                 <Button type="submit" disabled={isLoading || !name.trim()}>
                     {isLoading ? 'Registering...' : 'Register passkey'}
                 </Button>
+
                 <Button type="button" variant="ghost" onClick={handleCancel}>
                     Cancel
                 </Button>

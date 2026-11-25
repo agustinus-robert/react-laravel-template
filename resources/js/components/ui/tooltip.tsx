@@ -1,7 +1,11 @@
+
 import * as TooltipPrimitive from "@radix-ui/react-tooltip"
 import * as React from "react"
 
 import { cn } from "@/lib/utils"
+
+const IS_BOOTSTRAP =
+  (import.meta.env.VITE_THEME || "tailwind") === "bootstrap"
 
 function TooltipProvider({
   delayDuration = 0,
@@ -34,6 +38,30 @@ function TooltipContent({
   children,
   ...props
 }: React.ComponentProps<typeof TooltipPrimitive.Content>) {
+  if (IS_BOOTSTRAP) {
+    return (
+      <TooltipPrimitive.Portal>
+        <TooltipPrimitive.Content
+          data-slot="tooltip-content"
+          sideOffset={sideOffset}
+          className={cn(
+            "bg-dark text-white rounded px-3 py-2 small shadow",
+            className
+          )}
+          style={{ zIndex: 1080 }}
+          {...props}
+        >
+          {children}
+          <TooltipPrimitive.Arrow
+            className="bg-dark fill-dark"
+            width={8}
+            height={4}
+          />
+        </TooltipPrimitive.Content>
+      </TooltipPrimitive.Portal>
+    )
+  }
+
   return (
     <TooltipPrimitive.Portal>
       <TooltipPrimitive.Content

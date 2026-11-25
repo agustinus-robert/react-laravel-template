@@ -30,6 +30,79 @@ const SIDEBAR_WIDTH_MOBILE = "18rem"
 const SIDEBAR_WIDTH_ICON = "3rem"
 const SIDEBAR_KEYBOARD_SHORTCUT = "b"
 
+const SIDEBAR_THEME = (import.meta.env.VITE_THEME || "tailwind") as "bootstrap" | "tailwind"
+const IS_BOOTSTRAP = SIDEBAR_THEME === "bootstrap"
+
+const bootstrapSidebarStyles = `
+[data-sidebar-theme="bootstrap"] { display:flex; width:100%; min-height:100vh; color:var(--bs-body-color); }
+[data-sidebar-theme="bootstrap"] [data-slot="sidebar"] { color:var(--bs-body-color); }
+[data-sidebar-theme="bootstrap"] [data-sidebar="sidebar"] { background:var(--bs-body-bg); color:var(--bs-body-color); display:flex; flex-direction:column; height:100%; width:100%; border-color:var(--bs-border-color); }
+[data-sidebar-theme="bootstrap"] [data-sidebar="sidebar"][data-mobile="true"] { position:fixed; inset-block:0; z-index:1055; width:18rem; max-width:85vw; padding:0; box-shadow:var(--bs-box-shadow-lg); }
+[data-sidebar-theme="bootstrap"] [data-sidebar="sidebar"][data-mobile="true"][data-side="left"] { left:0; }
+[data-sidebar-theme="bootstrap"] [data-sidebar="sidebar"][data-mobile="true"][data-side="right"] { right:0; }
+[data-sidebar-theme="bootstrap"] [data-slot="sheet-overlay"] { position:fixed; inset:0; z-index:1050; background:rgba(0,0,0,.5); }
+[data-sidebar-theme="bootstrap"] [data-slot="sidebar"]:not([data-mobile="true"]) { position:relative; flex:0 0 auto; }
+[data-sidebar-theme="bootstrap"] [data-sidebar="sidebar"] [data-slot="sidebar-header"],
+[data-sidebar-theme="bootstrap"] [data-sidebar="sidebar"] [data-slot="sidebar-footer"] { padding:1rem; }
+[data-sidebar-theme="bootstrap"] [data-slot="sidebar-content"] { flex:1 1 auto; min-height:0; overflow:auto; padding:.5rem; }
+[data-sidebar-theme="bootstrap"] [data-slot="sidebar-group"] { position:relative; min-width:0; padding:.5rem 0; }
+[data-sidebar-theme="bootstrap"] [data-slot="sidebar-group-label"] { display:flex; align-items:center; min-height:2rem; padding:.25rem .75rem; color:var(--bs-secondary-color); font-size:.75rem; font-weight:600; }
+[data-sidebar-theme="bootstrap"] [data-slot="sidebar-group-content"] { width:100%; font-size:.875rem; }
+[data-sidebar-theme="bootstrap"] [data-slot="sidebar-menu"] { display:flex; flex-direction:column; gap:.2rem; width:100%; min-width:0; margin:0; padding:0; list-style:none; }
+[data-sidebar-theme="bootstrap"] [data-slot="sidebar-menu-item"] { position:relative; list-style:none; }
+[data-sidebar-theme="bootstrap"] [data-slot="sidebar-menu-button"],
+[data-sidebar-theme="bootstrap"] [data-slot="sidebar-menu-sub-button"] { display:flex; align-items:center; gap:.6rem; width:100%; min-width:0; padding:.5rem .75rem; border:1px solid transparent; border-radius:var(--bs-border-radius); background:transparent; color:var(--bs-body-color); text-align:left; text-decoration:none; font-size:.9rem; line-height:1.4; transition:background-color .15s ease,color .15s ease; }
+[data-sidebar-theme="bootstrap"] [data-slot="sidebar-menu-button"]:hover,
+[data-sidebar-theme="bootstrap"] [data-slot="sidebar-menu-sub-button"]:hover { background:var(--bs-tertiary-bg); color:var(--bs-emphasis-color); }
+[data-sidebar-theme="bootstrap"] [data-slot="sidebar-menu-button"][data-active="true"],
+[data-sidebar-theme="bootstrap"] [data-slot="sidebar-menu-sub-button"][data-active="true"] { background:var(--bs-primary-bg-subtle); color:var(--bs-primary-text-emphasis); border-color:var(--bs-border-color); font-weight:600; }
+[data-sidebar-theme="bootstrap"] [data-slot="sidebar-menu-button"]:disabled { opacity:.5; pointer-events:none; }
+[data-sidebar-theme="bootstrap"] [data-slot="sidebar-menu-button"] svg,
+[data-sidebar-theme="bootstrap"] [data-slot="sidebar-menu-sub-button"] svg { width:1rem; height:1rem; flex-shrink:0; }
+[data-sidebar-theme="bootstrap"] [data-slot="sidebar-menu-sub"] { display:flex; flex-direction:column; gap:.15rem; margin:.25rem 0 .25rem 1rem; padding:.25rem 0 .25rem .75rem; border-left:1px solid var(--bs-border-color); list-style:none; }
+[data-sidebar-theme="bootstrap"] [data-slot="sidebar-menu-sub-item"] { position:relative; list-style:none; }
+[data-sidebar-theme="bootstrap"] [data-slot="sidebar-menu-sub-button"] { padding:.4rem .65rem; font-size:.85rem; }
+[data-sidebar-theme="bootstrap"] [data-slot="sidebar-menu-badge"] { position:absolute; top:50%; right:.5rem; transform:translateY(-50%); min-width:1.25rem; padding:.15rem .4rem; border-radius:50rem; background:var(--bs-secondary-bg); color:var(--bs-secondary-color); font-size:.7rem; text-align:center; }
+[data-sidebar-theme="bootstrap"] [data-slot="sidebar-group-action"],
+[data-sidebar-theme="bootstrap"] [data-slot="sidebar-menu-action"] { display:inline-flex; align-items:center; justify-content:center; border:0; border-radius:var(--bs-border-radius); background:transparent; color:var(--bs-secondary-color); cursor:pointer; }
+[data-sidebar-theme="bootstrap"] [data-slot="sidebar-group-action"] { position:absolute; top:.75rem; right:.75rem; width:2rem; height:2rem; }
+[data-sidebar-theme="bootstrap"] [data-slot="sidebar-menu-action"] { position:absolute; top:.35rem; right:.35rem; width:1.8rem; height:1.8rem; }
+[data-sidebar-theme="bootstrap"] [data-slot="sidebar-group-action"]:hover,
+[data-sidebar-theme="bootstrap"] [data-slot="sidebar-menu-action"]:hover { background:var(--bs-tertiary-bg); color:var(--bs-emphasis-color); }
+[data-sidebar-theme="bootstrap"] [data-slot="sidebar-separator"] { height:1px; margin:.5rem 0; border:0; background:var(--bs-border-color); }
+[data-sidebar-theme="bootstrap"] [data-slot="sidebar-input"] { display:block; width:100%; padding:.375rem .75rem; border:1px solid var(--bs-border-color); border-radius:var(--bs-border-radius); background:var(--bs-body-bg); color:var(--bs-body-color); }
+[data-sidebar-theme="bootstrap"] [data-slot="sidebar-trigger"] { display:inline-flex; align-items:center; justify-content:center; width:2.25rem; height:2.25rem; padding:.375rem; border:1px solid var(--bs-border-color); border-radius:var(--bs-border-radius); background:var(--bs-body-bg); color:var(--bs-body-color); }
+[data-sidebar-theme="bootstrap"] [data-slot="sidebar-trigger"] svg { width:1.1rem; height:1.1rem; }
+[data-sidebar-theme="bootstrap"] [data-slot="sidebar-inset"] { display:flex; flex:1 1 auto; flex-direction:column; min-width:0; min-height:100vh; background:var(--bs-body-bg); }
+[data-sidebar-theme="bootstrap"] [data-slot="sidebar-rail"] { cursor:col-resize; }
+[data-sidebar-theme="bootstrap"] [data-slot="sidebar-menu-skeleton"] { display:flex; align-items:center; gap:.5rem; height:2rem; padding:0 .5rem; }
+[data-sidebar-theme="bootstrap"] [data-sidebar="menu-skeleton-icon"],
+[data-sidebar-theme="bootstrap"] [data-sidebar="menu-skeleton-text"] { display:block; height:.8rem; border-radius:.25rem; background:var(--bs-secondary-bg); }
+[data-sidebar-theme="bootstrap"] [data-sidebar="menu-skeleton-icon"] { width:1rem; }
+[data-sidebar-theme="bootstrap"] [data-sidebar="menu-skeleton-text"] { width:var(--skeleton-width,65%); max-width:90%; }
+[data-sidebar-theme="bootstrap"] [data-slot="sidebar"] > [data-sidebar="sidebar"] { border-right:1px solid var(--bs-border-color); }
+[data-sidebar-theme="bootstrap"] [data-slot="sidebar"][data-side="right"] > [data-sidebar="sidebar"] { border-right:0; border-left:1px solid var(--bs-border-color); }
+[data-sidebar-theme="bootstrap"] [data-slot="sidebar"][data-variant="floating"] > [data-sidebar="sidebar"] { margin:.5rem; height:calc(100% - 1rem); border:1px solid var(--bs-border-color); border-radius:var(--bs-border-radius-lg); box-shadow:var(--bs-box-shadow); }
+[data-sidebar-theme="bootstrap"] [data-slot="sidebar"][data-state="collapsed"][data-collapsible="offcanvas"] { width:0; }
+[data-sidebar-theme="bootstrap"] [data-slot="sidebar"][data-state="collapsed"][data-collapsible="offcanvas"] > div:last-child { display:none; }
+[data-sidebar-theme="bootstrap"] [data-slot="sidebar"][data-state="collapsed"][data-collapsible="icon"] [data-sidebar="menu-button"] { justify-content:center; padding:.5rem; }
+[data-sidebar-theme="bootstrap"] [data-slot="sidebar"][data-state="collapsed"][data-collapsible="icon"] [data-sidebar="menu-button"] > span:last-child,
+[data-sidebar-theme="bootstrap"] [data-slot="sidebar"][data-state="collapsed"][data-collapsible="icon"] [data-slot="sidebar-group-label"],
+[data-sidebar-theme="bootstrap"] [data-slot="sidebar"][data-state="collapsed"][data-collapsible="icon"] [data-slot="sidebar-menu-sub"],
+[data-sidebar-theme="bootstrap"] [data-slot="sidebar"][data-state="collapsed"][data-collapsible="icon"] [data-slot="sidebar-menu-action"],
+[data-sidebar-theme="bootstrap"] [data-slot="sidebar"][data-state="collapsed"][data-collapsible="icon"] [data-slot="sidebar-menu-badge"] { display:none; }
+@media (min-width:768px) {
+ [data-sidebar-theme="bootstrap"] [data-slot="sidebar"] { display:block; }
+ [data-sidebar-theme="bootstrap"] [data-slot="sidebar"] > div:first-child { height:100vh; width:var(--sidebar-width); transition:width .2s ease; }
+ [data-sidebar-theme="bootstrap"] [data-slot="sidebar"] > div:last-child { position:fixed; inset-block:0; z-index:1030; display:flex; width:var(--sidebar-width); height:100vh; transition:inset .2s ease,width .2s ease; }
+ [data-sidebar-theme="bootstrap"] [data-slot="sidebar"][data-side="left"] > div:last-child { left:0; }
+ [data-sidebar-theme="bootstrap"] [data-slot="sidebar"][data-side="right"] > div:last-child { right:0; }
+ [data-sidebar-theme="bootstrap"] [data-slot="sidebar"][data-state="collapsed"][data-collapsible="offcanvas"] > div:first-child { width:0; }
+ [data-sidebar-theme="bootstrap"] [data-slot="sidebar"][data-state="collapsed"][data-collapsible="offcanvas"][data-side="left"] > div:last-child { left:calc(var(--sidebar-width) * -1); display:flex; }
+ [data-sidebar-theme="bootstrap"] [data-slot="sidebar"][data-state="collapsed"][data-collapsible="offcanvas"][data-side="right"] > div:last-child { right:calc(var(--sidebar-width) * -1); display:flex; }
+}
+`
+
 type SidebarContext = {
   state: "expanded" | "collapsed"
   open: boolean
@@ -126,7 +199,9 @@ function SidebarProvider({
 
   return (
     <SidebarContext.Provider value={contextValue}>
+      {IS_BOOTSTRAP && <style>{bootstrapSidebarStyles}</style>}
       <div
+        data-sidebar-theme={SIDEBAR_THEME}
         data-slot="sidebar-wrapper"
         style={
           {
@@ -136,7 +211,7 @@ function SidebarProvider({
           } as React.CSSProperties
         }
         className={cn(
-          "group/sidebar-wrapper has-data-[variant=inset]:bg-sidebar flex min-h-svh w-full",
+          IS_BOOTSTRAP ? "d-flex min-vh-100 w-100" : "group/sidebar-wrapper has-data-[variant=inset]:bg-sidebar flex min-h-svh w-full",
           className
         )}
         {...props}
@@ -253,21 +328,26 @@ function SidebarTrigger({
 }: React.ComponentProps<typeof Button>) {
   const { toggleSidebar, isMobile, state } = useSidebar()
 
+  const icon = isMobile || state === "collapsed" ? <PanelLeftOpenIcon /> : <PanelLeftCloseIcon />
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    onClick?.(event)
+    toggleSidebar()
+  }
+
+  if (IS_BOOTSTRAP) {
+    return (
+      <button type="button" data-sidebar="trigger" data-slot="sidebar-trigger"
+        className={cn("btn btn-outline-secondary btn-sm", className)}
+        onClick={handleClick} {...props}>
+        {icon}<span className="visually-hidden">Toggle sidebar</span>
+      </button>
+    )
+  }
+
   return (
-    <Button
-      data-sidebar="trigger"
-      data-slot="sidebar-trigger"
-      variant="ghost"
-      size="icon"
-      className={cn("h-7 w-7", className)}
-      onClick={(event) => {
-        onClick?.(event)
-        toggleSidebar()
-      }}
-      {...props}
-    >
-      {isMobile || state === "collapsed" ? <PanelLeftOpenIcon /> : <PanelLeftCloseIcon />}
-      <span className="sr-only">Toggle sidebar</span>
+    <Button data-sidebar="trigger" data-slot="sidebar-trigger" variant="ghost" size="icon"
+      className={cn("h-7 w-7", className)} onClick={handleClick} {...props}>
+      {icon}<span className="sr-only">Toggle sidebar</span>
     </Button>
   )
 }
@@ -315,13 +395,13 @@ function SidebarInput({
   className,
   ...props
 }: React.ComponentProps<typeof Input>) {
+  if (IS_BOOTSTRAP) {
+    return <input data-slot="sidebar-input" data-sidebar="input" className={cn("form-control form-control-sm", className)} {...props} />
+  }
+
   return (
-    <Input
-      data-slot="sidebar-input"
-      data-sidebar="input"
-      className={cn("bg-background h-8 w-full shadow-none", className)}
-      {...props}
-    />
+    <Input data-slot="sidebar-input" data-sidebar="input"
+      className={cn("bg-background h-8 w-full shadow-none", className)} {...props} />
   )
 }
 
@@ -349,13 +429,31 @@ function SidebarFooter({ className, ...props }: React.ComponentProps<"div">) {
 
 function SidebarSeparator({
   className,
+  orientation = "horizontal",
+  decorative = true,
   ...props
 }: React.ComponentProps<typeof Separator>) {
+  if (IS_BOOTSTRAP) {
+    return (
+      <div
+        data-slot="sidebar-separator"
+        data-sidebar="separator"
+        data-orientation={orientation}
+        role={decorative ? undefined : "separator"}
+        aria-orientation={decorative ? undefined : orientation}
+        className={cn("border-top my-2", className)}
+        {...props}
+      />
+    )
+  }
+
   return (
     <Separator
       data-slot="sidebar-separator"
       data-sidebar="separator"
       className={cn("bg-sidebar-border mx-2 w-auto", className)}
+      orientation={orientation}
+      decorative={decorative}
       {...props}
     />
   )

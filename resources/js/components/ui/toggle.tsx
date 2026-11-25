@@ -4,6 +4,9 @@ import * as React from "react"
 
 import { cn } from "@/lib/utils"
 
+const IS_BOOTSTRAP =
+  (import.meta.env.VITE_THEME || "tailwind") === "bootstrap"
+
 const toggleVariants = cva(
   "inline-flex items-center justify-center gap-2 rounded-md text-sm font-medium hover:bg-muted hover:text-muted-foreground disabled:pointer-events-none disabled:opacity-50 data-[state=on]:bg-accent data-[state=on]:text-accent-foreground [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 [&_svg]:shrink-0 focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] outline-none transition-[color,box-shadow] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive",
   {
@@ -28,11 +31,45 @@ const toggleVariants = cva(
 
 function Toggle({
   className,
-  variant,
-  size,
+  variant = "default",
+  size = "default",
   ...props
 }: React.ComponentProps<typeof TogglePrimitive.Root> &
   VariantProps<typeof toggleVariants>) {
+  if (IS_BOOTSTRAP) {
+    const bootstrapSizes = {
+      default: "px-2",
+      sm: "btn-sm px-2",
+      lg: "btn-lg px-3",
+    }
+
+    return (
+      <TogglePrimitive.Root
+        data-slot="toggle"
+        data-variant={variant}
+        data-size={size}
+        className={cn(
+          "btn d-inline-flex align-items-center justify-content-center gap-2",
+          variant === "outline"
+            ? "btn-outline-secondary"
+            : "btn-light border-0",
+          bootstrapSizes[size ?? "default"],
+          className
+        )}
+        style={{
+          minWidth:
+            size === "sm"
+              ? "2rem"
+              : size === "lg"
+                ? "2.5rem"
+                : "2.25rem",
+          ...props.style,
+        }}
+        {...props}
+      />
+    )
+  }
+
   return (
     <TogglePrimitive.Root
       data-slot="toggle"

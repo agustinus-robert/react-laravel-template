@@ -1,6 +1,9 @@
 import React from 'react';
 import { createInertiaApp } from '@inertiajs/react';
+
+import '../css/app.css';
 import 'leaflet/dist/leaflet.css';
+
 import { Toaster } from '@/components/ui/sonner';
 import { TooltipProvider } from '@/components/ui/tooltip';
 
@@ -11,6 +14,14 @@ import AuthLayout from '@/layouts/auth-layout';
 import SettingsLayout from '@/layouts/settings/layout';
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
+type Theme = 'bootstrap' | 'tailwind';
+
+const theme = (import.meta.env.VITE_THEME || 'tailwind') as Theme;
+if (theme === 'bootstrap') {
+    import('../css/themes/bootstrap.css');
+} else {
+    import('../css/themes/tailwind.css');
+}
 
 const pages = {
     ...import.meta.glob('./pages/**/*.tsx'),

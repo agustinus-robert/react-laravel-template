@@ -8,6 +8,8 @@ import { Button } from '@/components/ui/button';
 import { useTwoFactorAuth } from '@/hooks/use-two-factor-auth';
 import { disable, enable } from '@/routes/two-factor';
 
+const IS_BOOTSTRAP = (import.meta.env.VITE_THEME || 'tailwind') === 'bootstrap';
+
 export type Props = {
     canManageTwoFactor?: boolean;
     requiresConfirmation?: boolean;
@@ -29,6 +31,7 @@ export default function ManageTwoFactor(props: Props) {
         fetchRecoveryCodes,
         errors,
     } = useTwoFactorAuth();
+
     const [showSetupModal, setShowSetupModal] = useState<boolean>(false);
     const prevTwoFactorEnabled = useRef(twoFactorEnabled);
 
@@ -45,21 +48,36 @@ export default function ManageTwoFactor(props: Props) {
     }
 
     return (
-        <div className="space-y-6">
+        <div
+            className={IS_BOOTSTRAP ? 'd-flex flex-column gap-4' : 'space-y-6'}
+        >
             <Heading
                 variant="small"
                 title="Two-factor authentication"
                 description="Manage your two-factor authentication settings"
             />
+
             {twoFactorEnabled ? (
-                <div className="flex flex-col items-start justify-start space-y-4">
-                    <p className="text-sm text-muted-foreground">
+                <div
+                    className={
+                        IS_BOOTSTRAP
+                            ? 'd-flex flex-column align-items-start gap-3'
+                            : 'space-y-4 flex flex-col items-start justify-start'
+                    }
+                >
+                    <p
+                        className={
+                            IS_BOOTSTRAP
+                                ? 'small text-secondary mb-0'
+                                : 'text-sm text-muted-foreground'
+                        }
+                    >
                         You will be prompted for a secure, random pin during
                         login, which you can retrieve from the TOTP-supported
                         application on your phone.
                     </p>
 
-                    <div className="relative inline">
+                    <div className="position-relative">
                         <Form {...disable.form()}>
                             {({ processing }) => (
                                 <Button
@@ -80,8 +98,20 @@ export default function ManageTwoFactor(props: Props) {
                     />
                 </div>
             ) : (
-                <div className="flex flex-col items-start justify-start space-y-4">
-                    <p className="text-sm text-muted-foreground">
+                <div
+                    className={
+                        IS_BOOTSTRAP
+                            ? 'd-flex flex-column align-items-start gap-3'
+                            : 'space-y-4 flex flex-col items-start justify-start'
+                    }
+                >
+                    <p
+                        className={
+                            IS_BOOTSTRAP
+                                ? 'small text-secondary mb-0'
+                                : 'text-sm text-muted-foreground'
+                        }
+                    >
                         When you enable two-factor authentication, you will be
                         prompted for a secure pin during login. This pin can be
                         retrieved from a TOTP-supported application on your
@@ -91,7 +121,9 @@ export default function ManageTwoFactor(props: Props) {
                     <div>
                         {hasSetupData ? (
                             <Button onClick={() => setShowSetupModal(true)}>
-                                <ShieldCheck />
+                                <ShieldCheck
+                                    size={IS_BOOTSTRAP ? 18 : undefined}
+                                />
                                 Continue setup
                             </Button>
                         ) : (

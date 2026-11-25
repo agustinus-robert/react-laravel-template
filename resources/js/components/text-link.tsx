@@ -2,6 +2,8 @@ import { Link } from '@inertiajs/react';
 import type { ComponentProps } from 'react';
 import { cn } from '@/lib/utils';
 
+const IS_BOOTSTRAP = (import.meta.env.VITE_THEME || 'tailwind') === 'bootstrap';
+
 type Props = ComponentProps<typeof Link>;
 
 export default function TextLink({
@@ -12,7 +14,9 @@ export default function TextLink({
     return (
         <Link
             className={cn(
-                'text-foreground underline decoration-neutral-300 underline-offset-4 transition-colors duration-300 ease-out hover:decoration-current! dark:decoration-neutral-500',
+                IS_BOOTSTRAP
+                    ? 'text-body text-decoration-none'
+                    : 'text-foreground decoration-neutral-300 ease-out dark:decoration-neutral-500 underline underline-offset-4 transition-colors duration-300 hover:decoration-current!',
                 className,
             )}
             {...props}

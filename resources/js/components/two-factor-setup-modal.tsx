@@ -23,27 +23,80 @@ import { useClipboard } from '@/hooks/use-clipboard';
 import { OTP_MAX_LENGTH } from '@/hooks/use-two-factor-auth';
 import { confirm } from '@/routes/two-factor';
 
+const IS_BOOTSTRAP = (import.meta.env.VITE_THEME || 'tailwind') === 'bootstrap';
+
 function GridScanIcon() {
     return (
-        <div className="mb-3 rounded-full border border-border bg-card p-0.5 shadow-sm">
-            <div className="relative overflow-hidden rounded-full border border-border bg-muted p-2.5">
-                <div className="absolute inset-0 grid grid-cols-5 opacity-50">
+        <div
+            className={
+                IS_BOOTSTRAP
+                    ? 'mb-3 rounded-circle bg-body p-1 shadow-sm border'
+                    : 'mb-3 border-border bg-card p-0.5 shadow-sm rounded-full border'
+            }
+        >
+            <div
+                className={
+                    IS_BOOTSTRAP
+                        ? 'position-relative rounded-circle bg-body-secondary p-3 overflow-hidden border'
+                        : 'border-border bg-muted p-2.5 relative overflow-hidden rounded-full border'
+                }
+            >
+                <div
+                    className={
+                        IS_BOOTSTRAP
+                            ? 'position-absolute top-0 start-0 w-100 h-100 d-grid opacity-50'
+                            : 'inset-0 absolute grid grid-cols-5 opacity-50'
+                    }
+                    style={
+                        IS_BOOTSTRAP
+                            ? { gridTemplateColumns: 'repeat(5, 1fr)' }
+                            : undefined
+                    }
+                >
                     {Array.from({ length: 5 }, (_, i) => (
                         <div
                             key={`col-${i + 1}`}
-                            className="border-r border-border last:border-r-0"
+                            className={
+                                IS_BOOTSTRAP
+                                    ? 'border-end'
+                                    : 'border-border border-r last:border-r-0'
+                            }
                         />
                     ))}
                 </div>
-                <div className="absolute inset-0 grid grid-rows-5 opacity-50">
+
+                <div
+                    className={
+                        IS_BOOTSTRAP
+                            ? 'position-absolute top-0 start-0 w-100 h-100 d-grid opacity-50'
+                            : 'inset-0 absolute grid grid-rows-5 opacity-50'
+                    }
+                    style={
+                        IS_BOOTSTRAP
+                            ? { gridTemplateRows: 'repeat(5, 1fr)' }
+                            : undefined
+                    }
+                >
                     {Array.from({ length: 5 }, (_, i) => (
                         <div
                             key={`row-${i + 1}`}
-                            className="border-b border-border last:border-b-0"
+                            className={
+                                IS_BOOTSTRAP
+                                    ? 'border-bottom'
+                                    : 'border-border border-b last:border-b-0'
+                            }
                         />
                     ))}
                 </div>
-                <ScanLine className="relative z-20 size-6 text-foreground" />
+
+                <ScanLine
+                    className={
+                        IS_BOOTSTRAP
+                            ? 'position-relative'
+                            : 'size-6 text-foreground relative z-20'
+                    }
+                    size={IS_BOOTSTRAP ? 24 : undefined}
+                />
             </div>
         </div>
     );
@@ -72,20 +125,57 @@ function TwoFactorSetupStep({
                 <AlertError errors={errors} />
             ) : (
                 <>
-                    <div className="mx-auto flex max-w-md overflow-hidden">
-                        <div className="mx-auto aspect-square w-64 rounded-lg border border-border">
-                            <div className="z-10 flex h-full w-full items-center justify-center p-5">
+                    <div
+                        className={
+                            IS_BOOTSTRAP
+                                ? 'd-flex justify-content-center mx-auto overflow-hidden'
+                                : 'max-w-md mx-auto flex overflow-hidden'
+                        }
+                    >
+                        <div
+                            className={
+                                IS_BOOTSTRAP
+                                    ? 'rounded-3 border'
+                                    : 'w-64 rounded-lg border-border mx-auto aspect-square border'
+                            }
+                            style={
+                                IS_BOOTSTRAP
+                                    ? {
+                                          width: '16rem',
+                                          aspectRatio: '1 / 1',
+                                      }
+                                    : undefined
+                            }
+                        >
+                            <div
+                                className={
+                                    IS_BOOTSTRAP
+                                        ? 'd-flex align-items-center justify-content-center w-100 h-100 p-3'
+                                        : 'p-5 z-10 flex h-full w-full items-center justify-center'
+                                }
+                            >
                                 {qrCodeSvg ? (
                                     <div
-                                        className="aspect-square w-full rounded-lg bg-white p-2 [&_svg]:size-full"
+                                        className={
+                                            IS_BOOTSTRAP
+                                                ? 'rounded-3 bg-white p-2 w-100 h-100'
+                                                : 'rounded-lg bg-white p-2 aspect-square w-full [&_svg]:size-full'
+                                        }
+                                        style={
+                                            IS_BOOTSTRAP
+                                                ? {
+                                                      aspectRatio: '1 / 1',
+                                                  }
+                                                : {
+                                                      filter:
+                                                          resolvedAppearance ===
+                                                          'dark'
+                                                              ? 'invert(1) brightness(1.5)'
+                                                              : undefined,
+                                                  }
+                                        }
                                         dangerouslySetInnerHTML={{
                                             __html: qrCodeSvg,
-                                        }}
-                                        style={{
-                                            filter:
-                                                resolvedAppearance === 'dark'
-                                                    ? 'invert(1) brightness(1.5)'
-                                                    : undefined,
                                         }}
                                     />
                                 ) : (
@@ -95,23 +185,69 @@ function TwoFactorSetupStep({
                         </div>
                     </div>
 
-                    <div className="flex w-full space-x-5">
-                        <Button className="w-full" onClick={onNextStep}>
+                    <div
+                        className={
+                            IS_BOOTSTRAP
+                                ? 'd-flex w-100'
+                                : 'space-x-5 flex w-full'
+                        }
+                    >
+                        <Button
+                            className={IS_BOOTSTRAP ? 'w-100' : 'w-full'}
+                            onClick={onNextStep}
+                        >
                             {buttonText}
                         </Button>
                     </div>
 
-                    <div className="relative flex w-full items-center justify-center">
-                        <div className="absolute inset-0 top-1/2 h-px w-full bg-border" />
-                        <span className="relative bg-card px-2 py-1">
+                    <div
+                        className={
+                            IS_BOOTSTRAP
+                                ? 'position-relative d-flex w-100 align-items-center justify-content-center'
+                                : 'relative flex w-full items-center justify-center'
+                        }
+                    >
+                        <div
+                            className={
+                                IS_BOOTSTRAP
+                                    ? 'position-absolute top-50 start-0 w-100 border-top'
+                                    : 'inset-0 bg-border absolute top-1/2 h-px w-full'
+                            }
+                        />
+
+                        <span
+                            className={
+                                IS_BOOTSTRAP
+                                    ? 'position-relative bg-body px-2 py-1 small text-secondary'
+                                    : 'bg-card px-2 py-1 relative'
+                            }
+                        >
                             or, enter the code manually
                         </span>
                     </div>
 
-                    <div className="flex w-full space-x-2">
-                        <div className="flex w-full items-stretch overflow-hidden rounded-xl border border-border">
+                    <div
+                        className={
+                            IS_BOOTSTRAP
+                                ? 'd-flex w-100'
+                                : 'space-x-2 flex w-full'
+                        }
+                    >
+                        <div
+                            className={
+                                IS_BOOTSTRAP
+                                    ? 'd-flex w-100 align-items-stretch rounded-3 overflow-hidden border'
+                                    : 'rounded-xl border-border flex w-full items-stretch overflow-hidden border'
+                            }
+                        >
                             {!manualSetupKey ? (
-                                <div className="flex h-full w-full items-center justify-center bg-muted p-3">
+                                <div
+                                    className={
+                                        IS_BOOTSTRAP
+                                            ? 'd-flex w-100 align-items-center justify-content-center bg-body-secondary p-3'
+                                            : 'bg-muted p-3 flex h-full w-full items-center justify-center'
+                                    }
+                                >
                                     <Spinner />
                                 </div>
                             ) : (
@@ -120,13 +256,29 @@ function TwoFactorSetupStep({
                                         type="text"
                                         readOnly
                                         value={manualSetupKey}
-                                        className="h-full w-full bg-background p-3 text-foreground outline-none"
+                                        className={
+                                            IS_BOOTSTRAP
+                                                ? 'form-control rounded-0 bg-body text-body border-0 shadow-none'
+                                                : 'bg-background p-3 text-foreground h-full w-full outline-none'
+                                        }
                                     />
+
                                     <button
+                                        type="button"
                                         onClick={() => copy(manualSetupKey)}
-                                        className="border-l border-border px-3 hover:bg-muted"
+                                        className={
+                                            IS_BOOTSTRAP
+                                                ? 'btn btn-light border-start rounded-0 px-3 border-0'
+                                                : 'border-border px-3 hover:bg-muted border-l'
+                                        }
+                                        aria-label="Copy setup key"
                                     >
-                                        <IconComponent className="w-4" />
+                                        <IconComponent
+                                            className={
+                                                IS_BOOTSTRAP ? '' : 'w-4'
+                                            }
+                                            size={IS_BOOTSTRAP ? 16 : undefined}
+                                        />
                                     </button>
                                 </>
                             )}
@@ -166,64 +318,84 @@ function TwoFactorVerificationStep({
                 errors,
             }: {
                 processing: boolean;
-                errors?: { confirmTwoFactorAuthentication?: { code?: string } };
+                errors?: {
+                    confirmTwoFactorAuthentication?: {
+                        code?: string;
+                    };
+                };
             }) => (
-                <>
+                <div
+                    ref={pinInputContainerRef}
+                    className={
+                        IS_BOOTSTRAP
+                            ? 'position-relative w-100 d-flex flex-column gap-3'
+                            : 'space-y-3 relative w-full'
+                    }
+                >
                     <div
-                        ref={pinInputContainerRef}
-                        className="relative w-full space-y-3"
+                        className={
+                            IS_BOOTSTRAP
+                                ? 'd-flex w-100 flex-column align-items-center gap-3 py-2'
+                                : 'space-y-3 py-2 flex w-full flex-col items-center'
+                        }
                     >
-                        <div className="flex w-full flex-col items-center space-y-3 py-2">
-                            <InputOTP
-                                id="otp"
-                                name="code"
-                                maxLength={OTP_MAX_LENGTH}
-                                onChange={setCode}
-                                disabled={processing}
-                                pattern={REGEXP_ONLY_DIGITS}
-                                autoFocus
-                            >
-                                <InputOTPGroup>
-                                    {Array.from(
-                                        { length: OTP_MAX_LENGTH },
-                                        (_, index) => (
-                                            <InputOTPSlot
-                                                key={index}
-                                                index={index}
-                                            />
-                                        ),
-                                    )}
-                                </InputOTPGroup>
-                            </InputOTP>
-                            <InputError
-                                message={
-                                    errors?.confirmTwoFactorAuthentication?.code
-                                }
-                            />
-                        </div>
+                        <InputOTP
+                            id="otp"
+                            name="code"
+                            maxLength={OTP_MAX_LENGTH}
+                            onChange={setCode}
+                            disabled={processing}
+                            pattern={REGEXP_ONLY_DIGITS}
+                            autoFocus
+                        >
+                            <InputOTPGroup>
+                                {Array.from(
+                                    { length: OTP_MAX_LENGTH },
+                                    (_, index) => (
+                                        <InputOTPSlot
+                                            key={index}
+                                            index={index}
+                                        />
+                                    ),
+                                )}
+                            </InputOTPGroup>
+                        </InputOTP>
 
-                        <div className="flex w-full space-x-5">
-                            <Button
-                                type="button"
-                                variant="outline"
-                                className="flex-1"
-                                onClick={onBack}
-                                disabled={processing}
-                            >
-                                Back
-                            </Button>
-                            <Button
-                                type="submit"
-                                className="flex-1"
-                                disabled={
-                                    processing || code.length < OTP_MAX_LENGTH
-                                }
-                            >
-                                Confirm
-                            </Button>
-                        </div>
+                        <InputError
+                            message={
+                                errors?.confirmTwoFactorAuthentication?.code
+                            }
+                        />
                     </div>
-                </>
+
+                    <div
+                        className={
+                            IS_BOOTSTRAP
+                                ? 'd-flex w-100 gap-2'
+                                : 'space-x-5 flex w-full'
+                        }
+                    >
+                        <Button
+                            type="button"
+                            variant="outline"
+                            className={IS_BOOTSTRAP ? 'flex-fill' : 'flex-1'}
+                            onClick={onBack}
+                            disabled={processing}
+                        >
+                            Back
+                        </Button>
+
+                        <Button
+                            type="submit"
+                            className={IS_BOOTSTRAP ? 'flex-fill' : 'flex-1'}
+                            disabled={
+                                processing || code.length < OTP_MAX_LENGTH
+                            }
+                        >
+                            Confirm
+                        </Button>
+                    </div>
+                </div>
             )}
         </Form>
     );
@@ -302,7 +474,6 @@ export default function TwoFactorSetupModal({
     const handleModalNextStep = useCallback(() => {
         if (requiresConfirmation) {
             setShowVerificationStep(true);
-
             return;
         }
 
@@ -324,16 +495,42 @@ export default function TwoFactorSetupModal({
 
     return (
         <Dialog open={isOpen} onOpenChange={(open) => !open && handleClose()}>
-            <DialogContent className="sm:max-w-md">
-                <DialogHeader className="flex items-center justify-center">
+            <DialogContent
+                className={IS_BOOTSTRAP ? 'rounded-3' : 'sm:max-w-md'}
+                style={
+                    IS_BOOTSTRAP
+                        ? {
+                              width: 'calc(100% - 2rem)',
+                              maxWidth: '28rem',
+                          }
+                        : undefined
+                }
+            >
+                <DialogHeader
+                    className={
+                        IS_BOOTSTRAP
+                            ? 'd-flex flex-column align-items-center text-center'
+                            : 'flex items-center justify-center'
+                    }
+                >
                     <GridScanIcon />
+
                     <DialogTitle>{modalConfig.title}</DialogTitle>
-                    <DialogDescription className="text-center">
+
+                    <DialogDescription
+                        className={IS_BOOTSTRAP ? 'text-center' : 'text-center'}
+                    >
                         {modalConfig.description}
                     </DialogDescription>
                 </DialogHeader>
 
-                <div className="flex flex-col items-center space-y-5">
+                <div
+                    className={
+                        IS_BOOTSTRAP
+                            ? 'd-flex flex-column align-items-center gap-4'
+                            : 'space-y-5 flex flex-col items-center'
+                    }
+                >
                     {showVerificationStep ? (
                         <TwoFactorVerificationStep
                             onClose={handleClose}

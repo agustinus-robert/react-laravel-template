@@ -8,7 +8,25 @@ type Props = {
     variant?: AppVariant;
 };
 
-export function AppShell({ children, variant = 'sidebar' }: Props) {
+type Theme = 'bootstrap' | 'tailwind';
+
+const theme = (import.meta.env.VITE_THEME || 'tailwind') as Theme;
+
+function BootstrapShell({ children, variant = 'sidebar' }: Props) {
+    const isOpen = usePage().props.sidebarOpen;
+
+    if (variant === 'header') {
+        return (
+            <div className="d-flex min-vh-100 w-100 flex-column">
+                {children}
+            </div>
+        );
+    }
+
+    return <SidebarProvider defaultOpen={isOpen}>{children}</SidebarProvider>;
+}
+
+function TailwindShell({ children, variant = 'sidebar' }: Props) {
     const isOpen = usePage().props.sidebarOpen;
 
     if (variant === 'header') {
@@ -18,4 +36,12 @@ export function AppShell({ children, variant = 'sidebar' }: Props) {
     }
 
     return <SidebarProvider defaultOpen={isOpen}>{children}</SidebarProvider>;
+}
+
+export function AppShell(props: Props) {
+    return theme === 'bootstrap' ? (
+        <BootstrapShell {...props} />
+    ) : (
+        <TailwindShell {...props} />
+    );
 }
