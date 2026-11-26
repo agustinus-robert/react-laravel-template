@@ -36,8 +36,8 @@
             }
         </style>
 
-        <link rel="icon" href="/icon-16.png" sizes="any">
-        <link rel="apple-touch-icon" href="/icon-70.png">
+        <link rel="icon" href="/laravel-ico.png" sizes="any">
+        <link rel="apple-touch-icon" href="/laravel-ico.png">
         @routes
         @fonts
 

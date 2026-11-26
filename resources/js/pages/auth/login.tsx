@@ -240,7 +240,6 @@ export default function Login({ status, canResetPassword }: Props) {
                         : 'bg-background px-6 py-8 flex min-h-screen w-full flex-col items-center justify-center'
                 }
             >
-                {/* LOGIN CONTAINER - SINGLE OUTER BORDER */}
                 <div
                     className={
                         isBootstrap
@@ -331,7 +330,6 @@ export default function Login({ status, canResetPassword }: Props) {
                         )}
                     </div>
 
-                    {/* RIGHT: LARAVEL IMAGE */}
                     <div
                         className={
                             isBootstrap
@@ -360,31 +358,9 @@ export default function Login({ status, canResetPassword }: Props) {
                                 isBootstrap ? { objectFit: 'cover' } : undefined
                             }
                         />
-
-                        <div
-                            className={
-                                isBootstrap
-                                    ? 'position-absolute bottom-0 start-0 w-100 p-5 text-white'
-                                    : 'inset-x-0 bottom-0 from-black/80 via-black/30 p-10 text-white absolute bg-gradient-to-t to-transparent'
-                            }
-                        >
-                            <div className="text-sm font-medium tracking-widest uppercase opacity-80">
-                                The PHP Framework
-                            </div>
-
-                            <h2 className="mt-3 text-4xl font-bold tracking-tight">
-                                Laravel
-                            </h2>
-
-                            <p className="mt-3 max-w-md text-sm leading-6 text-white/80">
-                                An elegant framework for web artisans. Build
-                                something extraordinary.
-                            </p>
-                        </div>
                     </div>
                 </div>
 
-                {/* FOOTER - SAME FULL WIDTH AS LOGIN CONTAINER */}
                 <footer
                     className={
                         isBootstrap
@@ -410,8 +386,3 @@ export default function Login({ status, canResetPassword }: Props) {
         </>
     );
 }
-
-Login.layout = {
-    title: 'Log in to your account',
-    description: 'Enter your email and password below to log in',
-};
