@@ -43,7 +43,7 @@ const bootstrapVariants = {
   destructive: "btn-danger",
   outline: "btn-outline-primary",
   secondary: "btn-secondary",
-  ghost: "btn-outline-secondary",
+  ghost: "btn-light",
   link: "btn-link",
 }
 

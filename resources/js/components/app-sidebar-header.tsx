@@ -91,7 +91,7 @@ export function AppSidebarHeader({
                         : 'gap-2 flex w-full items-center'
                 }
             >
-                <SidebarTrigger className={IS_BOOTSTRAP ? 'me-1' : '-ml-1'} />
+                {/* <SidebarTrigger className={IS_BOOTSTRAP ? 'me-1' : '-ml-1'} /> */}
 
                 <Link
                     href="/"

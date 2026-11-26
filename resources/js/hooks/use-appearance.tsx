@@ -16,7 +16,7 @@ let initialized = false;
 
 const mediaQuery =
     typeof window !== 'undefined'
-        ? window.matchMedia('(prefers-color-scheme: dark)')
+        ? window.matchMedia('(prefers-color-scheme: light)')
         : null;
 
 const prefersDark = (): boolean => mediaQuery?.matches ?? false;

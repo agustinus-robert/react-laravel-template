@@ -62,13 +62,22 @@ export default function Profile({
                                         : 'gap-2 grid'
                                 }
                             >
-                                <Label htmlFor="name">Name</Label>
+                                <Label
+                                    htmlFor="name"
+                                    className={
+                                        IS_BOOTSTRAP
+                                            ? 'form-label mb-0 fw-medium'
+                                            : ''
+                                    }
+                                >
+                                    Name
+                                </Label>
 
                                 <Input
                                     id="name"
                                     className={
                                         IS_BOOTSTRAP
-                                            ? 'w-100'
+                                            ? 'form-control w-100'
                                             : 'mt-1 block w-full'
                                     }
                                     defaultValue={auth.user.name}
@@ -79,7 +88,11 @@ export default function Profile({
                                 />
 
                                 <InputError
-                                    className={IS_BOOTSTRAP ? 'mt-1' : 'mt-2'}
+                                    className={
+                                        IS_BOOTSTRAP
+                                            ? 'small text-danger mt-0'
+                                            : 'mt-2'
+                                    }
                                     message={errors.name}
                                 />
                             </div>
@@ -91,14 +104,23 @@ export default function Profile({
                                         : 'gap-2 grid'
                                 }
                             >
-                                <Label htmlFor="email">Email address</Label>
+                                <Label
+                                    htmlFor="email"
+                                    className={
+                                        IS_BOOTSTRAP
+                                            ? 'form-label mb-0 fw-medium'
+                                            : ''
+                                    }
+                                >
+                                    Email address
+                                </Label>
 
                                 <Input
                                     id="email"
                                     type="email"
                                     className={
                                         IS_BOOTSTRAP
-                                            ? 'w-100'
+                                            ? 'form-control w-100'
                                             : 'mt-1 block w-full'
                                     }
                                     defaultValue={auth.user.email}
@@ -109,14 +131,24 @@ export default function Profile({
                                 />
 
                                 <InputError
-                                    className={IS_BOOTSTRAP ? 'mt-1' : 'mt-2'}
+                                    className={
+                                        IS_BOOTSTRAP
+                                            ? 'small text-danger mt-0'
+                                            : 'mt-2'
+                                    }
                                     message={errors.email}
                                 />
                             </div>
 
                             {mustVerifyEmail &&
                                 auth.user.email_verified_at === null && (
-                                    <div>
+                                    <div
+                                        className={
+                                            IS_BOOTSTRAP
+                                                ? 'rounded-3 p-3 bg-body-tertiary border'
+                                                : ''
+                                        }
+                                    >
                                         <p
                                             className={
                                                 IS_BOOTSTRAP
@@ -158,7 +190,7 @@ export default function Profile({
                             <div
                                 className={
                                     IS_BOOTSTRAP
-                                        ? 'd-flex align-items-center gap-3'
+                                        ? 'd-flex align-items-center gap-3 pt-2'
                                         : 'gap-4 flex items-center'
                                 }
                             >
@@ -166,15 +198,35 @@ export default function Profile({
                                     disabled={processing}
                                     data-test="update-profile-button"
                                 >
-                                    Save
+                                    {IS_BOOTSTRAP ? (
+                                        <>
+                                            {processing && (
+                                                <span
+                                                    className="spinner-border spinner-border-sm me-2"
+                                                    aria-hidden="true"
+                                                />
+                                            )}
+                                            Save changes
+                                        </>
+                                    ) : (
+                                        'Save'
+                                    )}
                                 </Button>
+
+                                {IS_BOOTSTRAP && (
+                                    <span className="small text-secondary">
+                                        Update your profile information.
+                                    </span>
+                                )}
                             </div>
                         </>
                     )}
                 </Form>
             </div>
 
-            <DeleteUser />
+            <div className={IS_BOOTSTRAP ? 'mt-5 pt-4 border-top' : ''}>
+                <DeleteUser />
+            </div>
         </>
     );
 }
