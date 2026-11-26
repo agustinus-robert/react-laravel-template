@@ -1,79 +1,11 @@
-import { useState } from 'react';
-import { Link } from '@inertiajs/react';
-import { SidebarTrigger } from '@/components/ui/sidebar';
-import type { BreadcrumbItem as BreadcrumbItemType } from '@/types';
-import {
-    LayoutDashboard,
-    Home,
-    Users,
-    Settings,
-    FileText,
-    BarChart3,
-    Bell,
-    X,
-    Share2,
-    Rss,
-    Globe,
-    LayoutTemplate,
-    Building,
-} from 'lucide-react';
+import { Link, usePage } from '@inertiajs/react';
+import { Globe } from 'lucide-react';
 
 const IS_BOOTSTRAP = (import.meta.env.VITE_THEME || 'tailwind') === 'bootstrap';
 
-export function AppSidebarHeader({
-    breadcrumbs = [],
-}: {
-    breadcrumbs?: BreadcrumbItemType[];
-}) {
-    const [open, setOpen] = useState(false);
-
-    const menus = [
-        {
-            label: 'Home',
-            icon: Home,
-            href: '/dashboard',
-        },
-        {
-            label: 'Users',
-            icon: Users,
-            href: '/',
-        },
-        {
-            label: 'Hotel',
-            icon: Building,
-            href: '/hotel/dashboard',
-        },
-        {
-            label: 'Forum',
-            icon: Share2,
-            href: '/',
-        },
-        {
-            label: 'Page Builder',
-            icon: LayoutTemplate,
-            href: '/pagebuilder/init',
-        },
-        {
-            label: 'CMS',
-            icon: Rss,
-            href: '/cms/dashboard',
-        },
-        {
-            label: 'Posts',
-            icon: FileText,
-            href: '/',
-        },
-        {
-            label: 'Reports',
-            icon: BarChart3,
-            href: '/',
-        },
-        {
-            label: 'Dashboard',
-            icon: LayoutDashboard,
-            href: '/',
-        },
-    ];
+export function AppSidebarHeader() {
+    const { url } = usePage();
+    const isDashboard = url === '/' || url.split('?')[0] === '/';
 
     return (
         <header
@@ -91,14 +23,20 @@ export function AppSidebarHeader({
                         : 'gap-2 flex w-full items-center'
                 }
             >
-                {/* <SidebarTrigger className={IS_BOOTSTRAP ? 'me-1' : '-ml-1'} /> */}
-
                 <Link
                     href="/"
                     className={
                         IS_BOOTSTRAP
-                            ? 'd-inline-flex align-items-center gap-2 rounded px-3 py-2 small fw-medium text-body text-decoration-none bg-body-secondary'
-                            : 'gap-2 rounded-md bg-black/10 px-3 py-2 text-sm font-medium text-muted-foreground backdrop-blur-sm hover:bg-black/20 hover:text-foreground dark:bg-white/5 dark:hover:bg-white/10 flex items-center transition-colors'
+                            ? `d-inline-flex align-items-center gap-2 rounded px-3 py-2 small fw-medium text-decoration-none ${
+                                  isDashboard
+                                      ? 'bg-primary text-white'
+                                      : 'bg-body-secondary text-body'
+                              }`
+                            : `gap-2 rounded-md px-3 py-2 text-sm font-medium backdrop-blur-sm flex items-center transition-colors ${
+                                  isDashboard
+                                      ? 'bg-primary/15 text-primary'
+                                      : 'bg-black/10 text-muted-foreground hover:bg-black/20 hover:text-foreground dark:bg-white/5 dark:hover:bg-white/10'
+                              }`
                     }
                 >
                     <Globe
