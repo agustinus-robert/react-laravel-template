@@ -54,9 +54,9 @@ export default function Permission({ permission }: Props) {
     return (
         <>
             <Head title="Kategori" />
-            <div className="w-full px-4 py-8 sm:px-6 lg:px-8">
-                <div className="w-full overflow-hidden rounded-xl border border-slate-800 bg-background shadow-xl">
-                    <div className="flex items-center justify-between border-b border-slate-800 bg-background px-6 py-4">
+            <div className="px-4 py-8 sm:px-6 lg:px-8 w-full">
+                <div className="rounded-xl border-slate-800 bg-background shadow-xl w-full overflow-hidden border">
+                    <div className="border-slate-800 bg-background px-6 py-4 flex items-center justify-between border-b">
                         <h2 className="text-lg font-semibold text-slate-100">
                             Daftar Permission
                         </h2>
@@ -70,8 +70,8 @@ export default function Permission({ permission }: Props) {
                     </div>
 
                     <div className="w-full overflow-x-auto">
-                        <table className="w-full text-left text-sm text-slate-300">
-                            <thead className="border-b border-slate-800 bg-background text-xs tracking-wider text-slate-400 uppercase">
+                        <table className="text-sm text-slate-300 w-full text-left">
+                            <thead className="border-slate-800 bg-background text-xs tracking-wider text-slate-400 border-b uppercase">
                                 <tr>
                                     <th
                                         scope="col"
@@ -93,38 +93,38 @@ export default function Permission({ permission }: Props) {
                                     </th>
                                     <th
                                         scope="col"
-                                        className="px-6 py-3.5 text-right font-medium"
+                                        className="px-6 py-3.5 font-medium text-right"
                                     >
                                         Aksi
                                     </th>
                                 </tr>
                             </thead>
-                            <tbody className="divide-y divide-slate-800 bg-background">
+                            <tbody className="divide-slate-800 bg-background divide-y">
                                 {permission.data.length > 0 ? (
                                     permission.data.map((item) => (
                                         <tr
                                             key={item.id}
-                                            className="transition-colors hover:bg-slate-800/50"
+                                            className="hover:bg-slate-800/50 transition-colors"
                                         >
-                                            <td className="px-6 py-4 font-medium whitespace-nowrap text-slate-100">
+                                            <td className="px-6 py-4 font-medium text-slate-100 whitespace-nowrap">
                                                 {item.name}
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap">
-                                                <span className="bg-background-800 inline-flex items-center rounded-full border border-slate-700 px-2.5 py-0.5 text-xs font-medium text-slate-300">
+                                                <span className="bg-background-800 border-slate-700 px-2.5 py-0.5 text-xs font-medium text-slate-300 inline-flex items-center rounded-full border">
                                                     {item.slug}
                                                 </span>
                                             </td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-slate-400">
+                                            <td className="px-6 py-4 text-slate-400 whitespace-nowrap">
                                                 {item.creator?.name ?? '-'}
                                             </td>
-                                            <td className="px-6 py-4 text-right text-sm whitespace-nowrap">
-                                                <div className="flex items-center justify-end gap-3">
+                                            <td className="px-6 py-4 text-sm text-right whitespace-nowrap">
+                                                <div className="gap-3 flex items-center justify-end">
                                                     <Link
                                                         href={route(
                                                             'account.permission.edit',
                                                             item.id,
                                                         )}
-                                                        className="inline-flex items-center gap-1.5 font-medium text-indigo-400 transition-colors hover:text-indigo-300"
+                                                        className="gap-1.5 font-medium text-indigo-400 hover:text-indigo-300 inline-flex items-center transition-colors"
                                                     >
                                                         <Pencil className="h-4 w-4" />{' '}
                                                     </Link>
@@ -135,7 +135,7 @@ export default function Permission({ permission }: Props) {
                                                                 item.id,
                                                             )
                                                         }
-                                                        className="inline-flex items-center gap-1.5 font-medium text-rose-400 transition-colors hover:text-rose-300"
+                                                        className="gap-1.5 font-medium text-rose-400 hover:text-rose-300 inline-flex items-center transition-colors"
                                                     >
                                                         <Trash className="h-4 w-4" />
                                                     </button>
@@ -150,7 +150,7 @@ export default function Permission({ permission }: Props) {
                                             className="px-6 py-12 text-center"
                                         >
                                             <div className="flex flex-col items-center justify-center">
-                                                <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-slate-800 text-slate-500">
+                                                <div className="mb-3 h-12 w-12 bg-slate-800 text-slate-500 flex items-center justify-center rounded-full">
                                                     <FolderOpen className="h-6 w-6" />
                                                 </div>
                                                 <p className="text-base font-medium text-slate-300">
@@ -169,8 +169,8 @@ export default function Permission({ permission }: Props) {
                     </div>
 
                     {permission.data.length > 0 && (
-                        <div className="flex items-center justify-between border-t border-slate-800 bg-slate-900/50 px-6 py-4">
-                            <div className="flex flex-wrap gap-1">
+                        <div className="border-slate-800 bg-slate-900/50 px-6 py-4 flex items-center justify-between border-t">
+                            <div className="gap-1 flex flex-wrap">
                                 {permission.links.map((link, index) => (
                                     <Link
                                         key={index}
@@ -182,8 +182,8 @@ export default function Permission({ permission }: Props) {
                                             link.active
                                                 ? 'bg-indigo-600 text-white'
                                                 : link.url
-                                                  ? 'border border-slate-700 bg-slate-800 text-slate-300 hover:bg-slate-700'
-                                                  : 'cursor-not-allowed border border-slate-800 bg-slate-900 text-slate-600'
+                                                  ? 'border-slate-700 bg-slate-800 text-slate-300 hover:bg-slate-700 border'
+                                                  : 'border-slate-800 bg-slate-900 text-slate-600 cursor-not-allowed border'
                                         }`}
                                     />
                                 ))}
