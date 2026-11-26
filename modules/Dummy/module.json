@@ -1,0 +1,6 @@
+{
+    "name": "Dummy",
+    "enabled": true,
+    "namespace": "Modules\\Dummy",
+    "provider": "Modules\\Dummy\\Providers\\DummyServiceProvider"
+}
