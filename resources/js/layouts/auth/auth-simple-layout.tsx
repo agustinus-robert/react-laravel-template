@@ -9,7 +9,7 @@ const theme = (import.meta.env.VITE_THEME || 'tailwind') as Theme;
 function BootstrapLayout({ children, title, description }: AuthLayoutProps) {
     return (
         <div className="container-fluid min-vh-100 d-flex flex-column align-items-center justify-content-center p-4">
-            <div className="w-100" style={{ maxWidth: '400px' }}>
+            <div className="w-100">
                 <div className="d-flex flex-column gap-4">
                     <div className="d-flex flex-column align-items-center gap-3">
                         <div className="text-center">

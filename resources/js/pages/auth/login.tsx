@@ -1,5 +1,6 @@
 import { Form, Head } from '@inertiajs/react';
 
+import AppLogo from '@/components/app-logo';
 import InputError from '@/components/input-error';
 import PasskeyVerify from '@/components/passkey-verify';
 import PasswordInput from '@/components/password-input';
@@ -15,16 +16,9 @@ import { register } from '@/routes';
 import { store } from '@/routes/login';
 import { request } from '@/routes/password';
 
-// ========================================
-// CONFIGURATION
-// ========================================
-
 type Theme = 'bootstrap' | 'tailwind';
 
 const theme = (import.meta.env.VITE_THEME || 'tailwind') as Theme;
-// ========================================
-// TYPES
-// ========================================
 
 type Props = {
     status?: string;
@@ -34,10 +28,6 @@ type Props = {
 type LoginFormProps = {
     canResetPassword: boolean;
 };
-
-// ========================================
-// BOOTSTRAP LOGIN
-// ========================================
 
 function BootstrapLogin({ canResetPassword }: LoginFormProps) {
     return (
@@ -49,7 +39,6 @@ function BootstrapLogin({ canResetPassword }: LoginFormProps) {
             {({ processing, errors }) => (
                 <>
                     <div className="d-flex flex-column gap-3">
-                        {/* Email */}
                         <div>
                             <label htmlFor="email" className="form-label">
                                 Email address
@@ -70,7 +59,6 @@ function BootstrapLogin({ canResetPassword }: LoginFormProps) {
                             <InputError message={errors.email} />
                         </div>
 
-                        {/* Password */}
                         <div>
                             <div className="d-flex align-items-center justify-content-between mb-2">
                                 <label
@@ -104,7 +92,6 @@ function BootstrapLogin({ canResetPassword }: LoginFormProps) {
                             <InputError message={errors.password} />
                         </div>
 
-                        {/* Remember Me */}
                         <div className="form-check">
                             <input
                                 id="remember"
@@ -123,7 +110,6 @@ function BootstrapLogin({ canResetPassword }: LoginFormProps) {
                             </label>
                         </div>
 
-                        {/* Submit */}
                         <button
                             type="submit"
                             className="btn btn-primary w-100 d-flex align-items-center justify-content-center gap-2 mt-2"
@@ -136,7 +122,6 @@ function BootstrapLogin({ canResetPassword }: LoginFormProps) {
                         </button>
                     </div>
 
-                    {/* Register */}
                     <div className="small text-secondary text-center">
                         Don't have an account?{' '}
                         <TextLink
@@ -152,10 +137,6 @@ function BootstrapLogin({ canResetPassword }: LoginFormProps) {
         </Form>
     );
 }
-
-// ========================================
-// TAILWIND LOGIN
-// ========================================
 
 function TailwindLogin({ canResetPassword }: LoginFormProps) {
     return (
@@ -235,7 +216,7 @@ function TailwindLogin({ canResetPassword }: LoginFormProps) {
 
                     <div className="text-sm text-muted-foreground text-center">
                         Don't have an account?{' '}
-                        <TextLink href={register()} tabIndex={5}>
+                        <TextLink href={register()} tabIndex={6}>
                             Sign up
                         </TextLink>
                     </div>
@@ -245,34 +226,187 @@ function TailwindLogin({ canResetPassword }: LoginFormProps) {
     );
 }
 
-// ========================================
-// MAIN LOGIN
-// ========================================
-
 export default function Login({ status, canResetPassword }: Props) {
+    const isBootstrap = theme === 'bootstrap';
+
     return (
         <>
             <Head title="Log in" />
 
-            <PasskeyVerify />
-
-            {theme === 'bootstrap' ? (
-                <BootstrapLogin canResetPassword={canResetPassword} />
-            ) : (
-                <TailwindLogin canResetPassword={canResetPassword} />
-            )}
-
-            {status && (
+            <div
+                className={
+                    isBootstrap
+                        ? 'container-fluid min-vh-100 d-flex flex-column align-items-center justify-content-center py-4'
+                        : 'bg-background px-6 py-8 flex min-h-screen w-full flex-col items-center justify-center'
+                }
+            >
+                {/* LOGIN CONTAINER - SINGLE OUTER BORDER */}
                 <div
                     className={
-                        theme === 'bootstrap'
-                            ? 'small fw-medium text-success mb-3 text-center'
-                            : 'mb-4 text-sm font-medium text-green-600 text-center'
+                        isBootstrap
+                            ? 'w-100 mx-auto overflow-hidden'
+                            : 'rounded-1xl border-neutral-300/70 shadow-sm dark:border-neutral-700/70 lg:grid-cols-[0.75fr_1.75fr] mx-auto grid w-full max-w-[1600px] grid-cols-1 overflow-hidden border bg-transparent'
+                    }
+                    style={
+                        isBootstrap
+                            ? {
+                                  width: '100%',
+                                  maxWidth: '1600px',
+                                  border: '1px solid rgba(128,128,128,0.35)',
+                                  borderRadius: '24px',
+                                  display: 'grid',
+                                  gridTemplateColumns: '0.75fr 1.75fr',
+                                  backgroundColor: 'transparent',
+                              }
+                            : undefined
                     }
                 >
-                    {status}
+                    {/* LEFT: LOGIN FORM */}
+                    <div
+                        className={
+                            isBootstrap
+                                ? 'p-4 p-xl-5 d-flex flex-column justify-content-center'
+                                : 'p-6 sm:p-10 lg:p-12 flex min-h-[620px] flex-col justify-center bg-transparent'
+                        }
+                        style={
+                            isBootstrap
+                                ? {
+                                      minHeight: '620px',
+                                      backgroundColor: 'transparent',
+                                  }
+                                : undefined
+                        }
+                    >
+                        <div className={isBootstrap ? 'mb-4' : 'mb-8'}>
+                            <AppLogo />
+                        </div>
+
+                        <div className={isBootstrap ? 'mb-4' : 'mb-6'}>
+                            <h1
+                                className={
+                                    isBootstrap
+                                        ? 'h3 fw-bold mb-2'
+                                        : 'text-3xl font-bold tracking-tight'
+                                }
+                            >
+                                Welcome back
+                            </h1>
+
+                            <p
+                                className={
+                                    isBootstrap
+                                        ? 'text-secondary mb-0'
+                                        : 'mt-2 text-sm text-muted-foreground'
+                                }
+                            >
+                                Enter your email and password below to log in to
+                                your account.
+                            </p>
+                        </div>
+
+                        <div className={isBootstrap ? 'mb-4' : 'mb-6'}>
+                            <PasskeyVerify />
+                        </div>
+
+                        {isBootstrap ? (
+                            <BootstrapLogin
+                                canResetPassword={canResetPassword}
+                            />
+                        ) : (
+                            <TailwindLogin
+                                canResetPassword={canResetPassword}
+                            />
+                        )}
+
+                        {status && (
+                            <div
+                                className={
+                                    isBootstrap
+                                        ? 'small fw-medium text-success mt-4 text-center'
+                                        : 'mt-4 text-sm font-medium text-green-600 text-center'
+                                }
+                            >
+                                {status}
+                            </div>
+                        )}
+                    </div>
+
+                    {/* RIGHT: LARAVEL IMAGE */}
+                    <div
+                        className={
+                            isBootstrap
+                                ? 'position-relative overflow-hidden'
+                                : 'border-neutral-300/70 dark:border-neutral-700/70 relative min-h-[620px] w-full overflow-hidden border-l'
+                        }
+                        style={
+                            isBootstrap
+                                ? {
+                                      minHeight: '620px',
+                                      borderLeft:
+                                          '1px solid rgba(128,128,128,0.35)',
+                                  }
+                                : undefined
+                        }
+                    >
+                        <img
+                            src="/laravel.jpg"
+                            alt="Laravel"
+                            className={
+                                isBootstrap
+                                    ? 'position-absolute top-0 start-0 w-100 h-100'
+                                    : 'inset-0 absolute h-full w-full object-cover'
+                            }
+                            style={
+                                isBootstrap ? { objectFit: 'cover' } : undefined
+                            }
+                        />
+
+                        <div
+                            className={
+                                isBootstrap
+                                    ? 'position-absolute bottom-0 start-0 w-100 p-5 text-white'
+                                    : 'inset-x-0 bottom-0 from-black/80 via-black/30 p-10 text-white absolute bg-gradient-to-t to-transparent'
+                            }
+                        >
+                            <div className="text-sm font-medium tracking-widest uppercase opacity-80">
+                                The PHP Framework
+                            </div>
+
+                            <h2 className="mt-3 text-4xl font-bold tracking-tight">
+                                Laravel
+                            </h2>
+
+                            <p className="mt-3 max-w-md text-sm leading-6 text-white/80">
+                                An elegant framework for web artisans. Build
+                                something extraordinary.
+                            </p>
+                        </div>
+                    </div>
                 </div>
-            )}
+
+                {/* FOOTER - SAME FULL WIDTH AS LOGIN CONTAINER */}
+                <footer
+                    className={
+                        isBootstrap
+                            ? 'mt-3 w-100 px-4 py-2 small text-secondary text-center'
+                            : 'mt-3 rounded-xl border-neutral-300/70 px-5 py-2 text-xs tracking-wide text-muted-foreground dark:border-neutral-700/70 w-full max-w-[1600px] border bg-transparent text-center shadow-none'
+                    }
+                    style={
+                        isBootstrap
+                            ? {
+                                  width: '100%',
+                                  maxWidth: '1600px',
+                                  border: '1px solid rgba(128,128,128,0.35)',
+                                  borderRadius: '10px',
+                                  backgroundColor: 'transparent',
+                              }
+                            : undefined
+                    }
+                >
+                    Laravel React Template{' '}
+                    <span className="font-semibold">v.1</span>
+                </footer>
+            </div>
         </>
     );
 }
