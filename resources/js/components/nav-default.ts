@@ -12,7 +12,7 @@ import {
     Logs,
     ListCheck,
     Languages,
-    PackagePlus
+    PackagePlus,
 } from 'lucide-react';
 
 import { dashboard } from '@/routes';
@@ -31,33 +31,6 @@ export const mainNavGroups: NavGroup[] = [
                 title: 'Dashboard',
                 href: dashboard(),
                 icon: LayoutGrid,
-            },
-        ],
-    },
-
-    {
-        title: 'Transaction',
-        items: [
-            {
-                title: 'Barang Masuk',
-                href: '/transaction/incoming',
-                icon: PackagePlus,
-            }
-        ],
-    },
-
-    {
-        title: 'Master',
-        items: [
-            {
-                title: 'Kategori',
-                href: '/master/category',
-                icon: ListTree,
-            },
-            {
-                title: 'Sub Kategori',
-                href: '/master/sub-category',
-                icon: ListStartIcon,
             },
         ],
     },
