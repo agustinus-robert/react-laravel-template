@@ -3,6 +3,8 @@ import { route } from 'ziggy-js';
 import { toast } from 'sonner';
 import { ListTree } from 'lucide-react';
 
+const IS_BOOTSTRAP = (import.meta.env.VITE_THEME || 'tailwind') === 'bootstrap';
+
 interface Permission {
     id: number;
     name: string;
@@ -40,14 +42,13 @@ interface FormData {
     permissions: FormPermission[];
 }
 
-const inputClass =
-    'w-full rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground outline-none focus:border-primary focus:ring-1 focus:ring-ring disabled:cursor-not-allowed disabled:opacity-50';
-
 export default function RolePermissionForm({
     role,
     permission,
     role_permission,
 }: Props) {
+    const isBootstrap = IS_BOOTSTRAP;
+
     const initialPermissions: FormPermission[] = permission.map((item) => {
         const rolePermission = role_permission.find(
             (rolePermission) => rolePermission.permission_id === item.id,
@@ -89,53 +90,115 @@ export default function RolePermissionForm({
             'permissions',
             data.permissions.map((item) =>
                 item.permission_id === permissionId
-                    ? {
-                          ...item,
-                          [field]: value,
-                      }
+                    ? { ...item, [field]: value }
                     : item,
             ),
         );
     }
 
+    const checkboxClass = isBootstrap
+        ? 'form-check-input m-0'
+        : 'h-4 w-4 rounded border-slate-600 bg-slate-800 text-indigo-500 focus:ring-indigo-500';
+
     return (
         <form onSubmit={handleSubmit}>
             <fieldset disabled={processing}>
-                <div className="border-b border-slate-800 px-6 py-4">
-                    <h2 className="flex gap-3 text-lg font-semibold text-slate-100">
-                        <ListTree />
+                {/* Header */}
+                <div
+                    className={
+                        isBootstrap
+                            ? 'px-3 py-3 border-bottom text-center'
+                            : 'border-slate-800 px-6 py-4 border-b'
+                    }
+                >
+                    <h2
+                        className={
+                            isBootstrap
+                                ? 'd-flex align-items-center justify-content-center gap-2 fs-6 fw-semibold mb-1'
+                                : 'gap-3 text-lg font-semibold text-slate-100 flex'
+                        }
+                    >
+                        <ListTree size={isBootstrap ? 17 : 20} />
                         Permission Role
                     </h2>
 
-                    <p className="mt-1 text-sm text-slate-400">
+                    <p
+                        className={
+                            isBootstrap
+                                ? 'small text-body-secondary mb-2'
+                                : 'mt-1 text-sm text-slate-400'
+                        }
+                    >
                         Atur hak akses role terhadap setiap permission.
                     </p>
+
+                    {isBootstrap && (
+                        <span className="badge text-bg-primary fw-normal">
+                            Role: {role.name}
+                        </span>
+                    )}
                 </div>
 
-                <div className="p-6">
-                    <div className="overflow-hidden rounded-md border border-slate-800">
-                        <table className="w-full text-sm">
-                            <thead className="bg-slate-900">
-                                <tr>
-                                    <th className="px-4 py-3 text-left font-medium text-slate-300">
+                {/* Table */}
+
+                {/* Table */}
+                <div className={isBootstrap ? 'p-3' : 'p-6'}>
+                    <div
+                        className={
+                            isBootstrap
+                                ? 'rounded-3 overflow-hidden border-0'
+                                : 'rounded-md border-slate-800 overflow-hidden border'
+                        }
+                        style={
+                            isBootstrap
+                                ? {
+                                      backgroundColor: 'var(--bs-tertiary-bg)',
+                                  }
+                                : undefined
+                        }
+                    >
+                        <table
+                            className={
+                                isBootstrap
+                                    ? 'table-hover mb-0 table text-center align-middle'
+                                    : 'text-sm w-full'
+                            }
+                            style={
+                                isBootstrap ? { minWidth: '480px' } : undefined
+                            }
+                        >
+                            <thead>
+                                <tr
+                                    className={
+                                        isBootstrap
+                                            ? 'border-bottom'
+                                            : 'bg-slate-900'
+                                    }
+                                >
+                                    <th
+                                        className={
+                                            isBootstrap
+                                                ? 'px-3 py-3 fw-semibold small text-body-secondary text-start'
+                                                : 'px-4 py-3 font-medium text-slate-300 text-left'
+                                        }
+                                    >
                                         Permission
                                     </th>
 
-                                    <th className="px-4 py-3 text-center font-medium text-slate-300">
-                                        Create
-                                    </th>
-
-                                    <th className="px-4 py-3 text-center font-medium text-slate-300">
-                                        Read
-                                    </th>
-
-                                    <th className="px-4 py-3 text-center font-medium text-slate-300">
-                                        Update
-                                    </th>
-
-                                    <th className="px-4 py-3 text-center font-medium text-slate-300">
-                                        Delete
-                                    </th>
+                                    {['Create', 'Read', 'Update', 'Delete'].map(
+                                        (action) => (
+                                            <th
+                                                key={action}
+                                                className={
+                                                    isBootstrap
+                                                        ? 'px-2 py-3 fw-semibold small text-body-secondary text-center'
+                                                        : 'px-4 py-3 font-medium text-slate-300 text-center'
+                                                }
+                                            >
+                                                {action}
+                                            </th>
+                                        ),
+                                    )}
                                 </tr>
                             </thead>
 
@@ -151,99 +214,112 @@ export default function RolePermissionForm({
                                     return (
                                         <tr
                                             key={item.id}
-                                            className="border-t border-slate-800"
+                                            className={
+                                                isBootstrap
+                                                    ? 'border-bottom'
+                                                    : 'border-slate-800 border-t'
+                                            }
                                         >
-                                            <td className="px-4 py-3 text-slate-200">
+                                            <td
+                                                className={
+                                                    isBootstrap
+                                                        ? 'px-3 py-3 fw-medium text-start'
+                                                        : 'px-4 py-3 text-slate-200'
+                                                }
+                                            >
                                                 {item.name}
                                             </td>
 
-                                            <td className="px-4 py-3 text-center">
-                                                <input
-                                                    type="checkbox"
-                                                    checked={
-                                                        formPermission?.can_create ??
-                                                        false
+                                            {(
+                                                [
+                                                    'can_create',
+                                                    'can_read',
+                                                    'can_update',
+                                                    'can_delete',
+                                                ] as const
+                                            ).map((field) => (
+                                                <td
+                                                    key={field}
+                                                    className={
+                                                        isBootstrap
+                                                            ? 'px-2 py-3 text-center'
+                                                            : 'px-4 py-3 text-center'
                                                     }
-                                                    onChange={(e) =>
-                                                        handlePermissionChange(
-                                                            item.id,
-                                                            'can_create',
-                                                            e.target.checked,
-                                                        )
-                                                    }
-                                                />
-                                            </td>
-
-                                            <td className="px-4 py-3 text-center">
-                                                <input
-                                                    type="checkbox"
-                                                    checked={
-                                                        formPermission?.can_read ??
-                                                        false
-                                                    }
-                                                    onChange={(e) =>
-                                                        handlePermissionChange(
-                                                            item.id,
-                                                            'can_read',
-                                                            e.target.checked,
-                                                        )
-                                                    }
-                                                />
-                                            </td>
-
-                                            <td className="px-4 py-3 text-center">
-                                                <input
-                                                    type="checkbox"
-                                                    checked={
-                                                        formPermission?.can_update ??
-                                                        false
-                                                    }
-                                                    onChange={(e) =>
-                                                        handlePermissionChange(
-                                                            item.id,
-                                                            'can_update',
-                                                            e.target.checked,
-                                                        )
-                                                    }
-                                                />
-                                            </td>
-
-                                            <td className="px-4 py-3 text-center">
-                                                <input
-                                                    type="checkbox"
-                                                    checked={
-                                                        formPermission?.can_delete ??
-                                                        false
-                                                    }
-                                                    onChange={(e) =>
-                                                        handlePermissionChange(
-                                                            item.id,
-                                                            'can_delete',
-                                                            e.target.checked,
-                                                        )
-                                                    }
-                                                />
-                                            </td>
+                                                >
+                                                    <input
+                                                        type="checkbox"
+                                                        className={
+                                                            checkboxClass
+                                                        }
+                                                        checked={
+                                                            formPermission?.[
+                                                                field
+                                                            ] ?? false
+                                                        }
+                                                        onChange={(e) =>
+                                                            handlePermissionChange(
+                                                                item.id,
+                                                                field,
+                                                                e.target
+                                                                    .checked,
+                                                            )
+                                                        }
+                                                    />
+                                                </td>
+                                            ))}
                                         </tr>
                                     );
                                 })}
+
+                                {permission.length === 0 && (
+                                    <tr>
+                                        <td
+                                            colSpan={5}
+                                            className={
+                                                isBootstrap
+                                                    ? 'text-body-secondary py-4 text-center'
+                                                    : 'px-4 py-8 text-slate-500 text-center'
+                                            }
+                                        >
+                                            Belum ada permission.
+                                        </td>
+                                    </tr>
+                                )}
                             </tbody>
                         </table>
                     </div>
 
                     {errors.permissions && (
-                        <p className="mt-2 text-sm text-red-400">
+                        <p
+                            className={
+                                isBootstrap
+                                    ? 'text-danger small mt-2 mb-0'
+                                    : 'mt-2 text-sm text-red-400'
+                            }
+                        >
                             {errors.permissions}
                         </p>
                     )}
                 </div>
             </fieldset>
 
-            <div className="flex justify-end gap-2 border-t border-slate-800 px-6 py-4">
+            {/* Footer */}
+            <div
+                className={
+                    isBootstrap
+                        ? 'd-flex justify-content-center gap-2 px-3 py-3 border-top'
+                        : 'gap-2 border-slate-800 px-6 py-4 flex justify-end border-t'
+                }
+            >
                 <button
                     type="button"
                     disabled={processing}
-                    className="rounded-md border border-slate-700 px-4 py-2 text-sm font-medium text-slate-300 hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-50"
+                    onClick={() => window.history.back()}
+                    className={
+                        isBootstrap
+                            ? 'btn btn-sm btn-outline-secondary px-3'
+                            : 'rounded-md border-slate-700 px-4 py-2 text-sm font-medium text-slate-300 hover:bg-slate-800 border disabled:cursor-not-allowed disabled:opacity-50'
+                    }
                 >
                     Kembali
                 </button>
@@ -251,7 +327,11 @@ export default function RolePermissionForm({
                 <button
                     type="submit"
                     disabled={processing}
-                    className="rounded-md bg-slate-800 px-4 py-2 text-sm font-medium text-white hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
+                    className={
+                        isBootstrap
+                            ? 'btn btn-sm btn-primary px-3'
+                            : 'rounded-md bg-slate-800 px-4 py-2 text-sm font-medium text-white hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50'
+                    }
                 >
                     {processing ? 'Menyimpan...' : 'Simpan'}
                 </button>
