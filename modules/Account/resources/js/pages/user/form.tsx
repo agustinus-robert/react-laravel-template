@@ -19,6 +19,7 @@ interface Props {
     roles: Role[];
     user?: User;
     onClose: () => void;
+    isBootstrap: boolean;
 }
 
 interface FormData {
@@ -29,10 +30,12 @@ interface FormData {
     retype_password: string;
 }
 
-const inputClass =
-    'w-full rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground outline-none focus:border-primary focus:ring-1 focus:ring-ring disabled:cursor-not-allowed disabled:opacity-50';
-
-export default function UserForm({ roles, user, onClose }: Props) {
+export default function UserForm({
+    roles,
+    user,
+    onClose,
+    isBootstrap: IS_BOOTSTRAP,
+}: Props) {
     const { data, setData, post, put, processing, errors } = useForm<FormData>({
         role_id: user?.role_id ?? 0,
         name: user?.name ?? '',
@@ -40,6 +43,22 @@ export default function UserForm({ roles, user, onClose }: Props) {
         password: '',
         retype_password: '',
     });
+
+    const inputClass = IS_BOOTSTRAP
+        ? 'form-control'
+        : 'w-full rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground outline-none focus:border-primary focus:ring-1 focus:ring-ring disabled:cursor-not-allowed disabled:opacity-50';
+
+    const selectClass = IS_BOOTSTRAP
+        ? 'form-select'
+        : 'w-full rounded-md border border-slate-700 bg-background px-3 py-2 text-sm text-slate-100 outline-none focus:border-primary';
+
+    const labelClass = IS_BOOTSTRAP
+        ? 'form-label fw-medium small mb-1'
+        : 'mb-1 block text-sm font-medium';
+
+    const errorClass = IS_BOOTSTRAP
+        ? 'invalid-feedback d-block'
+        : 'mt-1 text-sm text-red-400';
 
     function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
@@ -83,25 +102,42 @@ export default function UserForm({ roles, user, onClose }: Props) {
     return (
         <form onSubmit={handleSubmit}>
             <fieldset disabled={processing}>
-                <div className="border-b border-slate-800 px-6 py-4">
-                    <h2 className="flex items-center gap-3 text-lg font-semibold text-slate-100">
-                        <ListTree />
+                {/* Header */}
+                <div
+                    className={
+                        IS_BOOTSTRAP
+                            ? 'border-bottom px-3 px-md-4 py-3'
+                            : 'border-slate-800 px-6 py-4 border-b'
+                    }
+                >
+                    <h2
+                        className={
+                            IS_BOOTSTRAP
+                                ? 'd-flex align-items-center gap-2 fs-6 fw-semibold mb-1 text-body'
+                                : 'gap-3 text-lg font-semibold text-slate-100 flex items-center'
+                        }
+                    >
+                        <ListTree size={20} />
                         {user ? 'Edit Pengguna' : 'Tambah Pengguna'}
                     </h2>
 
-                    <p className="mt-1 text-sm text-slate-400">
+                    <p
+                        className={
+                            IS_BOOTSTRAP
+                                ? 'small text-body-secondary mb-0'
+                                : 'mt-1 text-sm text-slate-400'
+                        }
+                    >
                         {user
                             ? 'Perbarui data pengguna yang sudah ada.'
                             : 'Tambahkan pengguna baru ke dalam sistem.'}
                     </p>
                 </div>
 
-                <div className="space-y-4 p-6">
-                    <div>
-                        <label
-                            htmlFor="role_id"
-                            className="mb-1 block text-sm font-medium"
-                        >
+                {/* Form Fields */}
+                <div className={IS_BOOTSTRAP ? 'p-3 p-md-4' : 'space-y-4 p-6'}>
+                    <div className={IS_BOOTSTRAP ? 'mb-3' : ''}>
+                        <label htmlFor="role_id" className={labelClass}>
                             Role
                         </label>
 
@@ -112,7 +148,7 @@ export default function UserForm({ roles, user, onClose }: Props) {
                             onChange={(e) =>
                                 setData('role_id', Number(e.target.value))
                             }
-                            className="w-full rounded-md border border-slate-700 bg-background px-3 py-2 text-sm text-slate-100 outline-none focus:border-primary"
+                            className={`${selectClass} ${errors.role_id ? (IS_BOOTSTRAP ? 'is-invalid' : 'border-red-500') : ''}`}
                         >
                             <option value="">Pilih Role</option>
 
@@ -124,17 +160,12 @@ export default function UserForm({ roles, user, onClose }: Props) {
                         </select>
 
                         {errors.role_id && (
-                            <p className="mt-1 text-sm text-red-400">
-                                {errors.role_id}
-                            </p>
+                            <p className={errorClass}>{errors.role_id}</p>
                         )}
                     </div>
 
-                    <div>
-                        <label
-                            htmlFor="name"
-                            className="mb-1 block text-sm font-medium"
-                        >
+                    <div className={IS_BOOTSTRAP ? 'mb-3' : ''}>
+                        <label htmlFor="name" className={labelClass}>
                             Nama
                         </label>
 
@@ -145,21 +176,16 @@ export default function UserForm({ roles, user, onClose }: Props) {
                             value={data.name}
                             onChange={(e) => setData('name', e.target.value)}
                             placeholder="Masukkan nama pengguna"
-                            className={inputClass}
+                            className={`${inputClass} ${errors.name ? (IS_BOOTSTRAP ? 'is-invalid' : 'border-red-500') : ''}`}
                         />
 
                         {errors.name && (
-                            <p className="mt-1 text-sm text-red-400">
-                                {errors.name}
-                            </p>
+                            <p className={errorClass}>{errors.name}</p>
                         )}
                     </div>
 
-                    <div>
-                        <label
-                            htmlFor="email"
-                            className="mb-1 block text-sm font-medium"
-                        >
+                    <div className={IS_BOOTSTRAP ? 'mb-3' : ''}>
+                        <label htmlFor="email" className={labelClass}>
                             Email
                         </label>
 
@@ -170,21 +196,16 @@ export default function UserForm({ roles, user, onClose }: Props) {
                             value={data.email}
                             onChange={(e) => setData('email', e.target.value)}
                             placeholder="Masukkan email pengguna"
-                            className={inputClass}
+                            className={`${inputClass} ${errors.email ? (IS_BOOTSTRAP ? 'is-invalid' : 'border-red-500') : ''}`}
                         />
 
                         {errors.email && (
-                            <p className="mt-1 text-sm text-red-400">
-                                {errors.email}
-                            </p>
+                            <p className={errorClass}>{errors.email}</p>
                         )}
                     </div>
 
-                    <div>
-                        <label
-                            htmlFor="password"
-                            className="mb-1 block text-sm font-medium"
-                        >
+                    <div className={IS_BOOTSTRAP ? 'mb-3' : ''}>
+                        <label htmlFor="password" className={labelClass}>
                             Kata Sandi
                         </label>
 
@@ -202,21 +223,16 @@ export default function UserForm({ roles, user, onClose }: Props) {
                                     : 'Masukkan kata sandi'
                             }
                             autoComplete="new-password"
-                            className={inputClass}
+                            className={`${inputClass} ${errors.password ? (IS_BOOTSTRAP ? 'is-invalid' : 'border-red-500') : ''}`}
                         />
 
                         {errors.password && (
-                            <p className="mt-1 text-sm text-red-400">
-                                {errors.password}
-                            </p>
+                            <p className={errorClass}>{errors.password}</p>
                         )}
                     </div>
 
-                    <div>
-                        <label
-                            htmlFor="retype_password"
-                            className="mb-1 block text-sm font-medium"
-                        >
+                    <div className={IS_BOOTSTRAP ? 'mb-0' : ''}>
+                        <label htmlFor="retype_password" className={labelClass}>
                             Ulangi Kata Sandi
                         </label>
 
@@ -230,18 +246,29 @@ export default function UserForm({ roles, user, onClose }: Props) {
                             }
                             placeholder="Ulangi kata sandi"
                             autoComplete="new-password"
-                            className={inputClass}
+                            className={`${inputClass} ${
+                                errors.retype_password
+                                    ? IS_BOOTSTRAP
+                                        ? 'is-invalid'
+                                        : 'border-red-500'
+                                    : data.retype_password &&
+                                        data.password !== data.retype_password
+                                      ? IS_BOOTSTRAP
+                                          ? 'is-invalid'
+                                          : 'border-red-500'
+                                      : ''
+                            }`}
                         />
 
                         {data.retype_password &&
                             data.password !== data.retype_password && (
-                                <p className="mt-1 text-sm text-red-400">
+                                <p className={errorClass}>
                                     Kata sandi tidak sama.
                                 </p>
                             )}
 
                         {errors.retype_password && (
-                            <p className="mt-1 text-sm text-red-400">
+                            <p className={errorClass}>
                                 {errors.retype_password}
                             </p>
                         )}
@@ -249,12 +276,23 @@ export default function UserForm({ roles, user, onClose }: Props) {
                 </div>
             </fieldset>
 
-            <div className="flex justify-end gap-2 border-t border-slate-800 px-6 py-4">
+            {/* Footer */}
+            <div
+                className={
+                    IS_BOOTSTRAP
+                        ? 'border-top px-3 px-md-4 py-3 d-flex justify-content-end gap-2'
+                        : 'gap-2 border-slate-800 px-6 py-4 flex justify-end border-t'
+                }
+            >
                 <button
                     type="button"
                     onClick={onClose}
                     disabled={processing}
-                    className="rounded-md border border-slate-700 px-4 py-2 text-sm font-medium text-slate-300 hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-50"
+                    className={
+                        IS_BOOTSTRAP
+                            ? 'btn btn-outline-secondary btn-sm'
+                            : 'rounded-md border-slate-700 px-4 py-2 text-sm font-medium text-slate-300 hover:bg-slate-800 border disabled:cursor-not-allowed disabled:opacity-50'
+                    }
                 >
                     Batal
                 </button>
@@ -262,7 +300,11 @@ export default function UserForm({ roles, user, onClose }: Props) {
                 <button
                     type="submit"
                     disabled={processing}
-                    className="rounded-md bg-slate-800 px-4 py-2 text-sm font-medium text-white hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
+                    className={
+                        IS_BOOTSTRAP
+                            ? 'btn btn-primary btn-sm'
+                            : 'rounded-md bg-slate-800 px-4 py-2 text-sm font-medium text-white hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50'
+                    }
                 >
                     {processing
                         ? user
