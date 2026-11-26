@@ -119,6 +119,7 @@
         "resources/js/**/*.tsx",
         "modules/**/*.ts",
         "modules/**/*.tsx",
-        "modules/**/*.d.ts"
+        "modules/**/*.d.ts",
+        "resources/js/lib/ajax.tss"
     ]
 }
