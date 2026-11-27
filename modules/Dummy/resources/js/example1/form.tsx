@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { upsertData } from '@/lib/ajax';
+import type { ChangeEvent, FormElement } from '@/lib/types/form';
 
 export default function TestForm() {
     const [spinner, setSpinner] = useState(false);
@@ -13,7 +14,7 @@ export default function TestForm() {
         address: '',
     });
 
-    function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    function handleSubmit(e: FormElement) {
         e.preventDefault();
 
         upsertData({
@@ -26,9 +27,7 @@ export default function TestForm() {
         });
     }
 
-    function handleChange(
-        e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-    ) {
+    function handleChange(e: ChangeEvent) {
         setForm({
             ...form,
             [e.target.name]: e.target.value,
